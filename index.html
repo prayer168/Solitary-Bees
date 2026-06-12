@@ -9,6 +9,36 @@
 </head>
 <body>
 
+<!-- ============ 共用 SVG defs（寫實蜜蜂用漸層與濾鏡） ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="wingG" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#f2ffff" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#cdeeff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#a9d8f5" stop-opacity="0.25"/>
+    </linearGradient>
+    <radialGradient id="amberG" cx="40%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#ffcf72"/>
+      <stop offset="55%" stop-color="#e89a2f"/>
+      <stop offset="100%" stop-color="#9c5a18"/>
+    </radialGradient>
+    <radialGradient id="blackG" cx="38%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#4a4a55"/>
+      <stop offset="60%" stop-color="#23232c"/>
+      <stop offset="100%" stop-color="#0c0c12"/>
+    </radialGradient>
+    <radialGradient id="tealG" cx="38%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#7af5d2"/>
+      <stop offset="55%" stop-color="#16b89a"/>
+      <stop offset="100%" stop-color="#0a6b62"/>
+    </radialGradient>
+    <radialGradient id="eyeG" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#6b6b78"/>
+      <stop offset="100%" stop-color="#0a0a10"/>
+    </radialGradient>
+  </defs>
+</svg>
+
 <!-- ============ Navbar ============ -->
 <nav class="navbar">
   <div class="brand">🐝 獨居蜂的秘密生活</div>
@@ -80,18 +110,8 @@
         <circle class="pollen p2" cx="160" cy="156" r="3" fill="#ffd166"/>
         <circle class="pollen p3" cx="240" cy="150" r="3" fill="#ffd166"/>
 
-        <!-- flying bee -->
-        <g class="bee-fly">
-          <g transform="translate(300,90)">
-            <ellipse class="wing-l" cx="-6" cy="-8" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
-            <ellipse class="wing-r" cx="8" cy="-8" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
-            <ellipse cx="0" cy="0" rx="16" ry="11" fill="#ffd166"/>
-            <rect x="-12" y="-9" width="6" height="18" fill="#1a1a1a" rx="2"/>
-            <rect x="-2" y="-10" width="6" height="20" fill="#1a1a1a" rx="2"/>
-            <circle cx="14" cy="-3" r="6" fill="#1a1a1a"/>
-            <circle cx="16" cy="-4" r="1.6" fill="#fff"/>
-          </g>
-        </g>
+        <!-- flying bee (寫實，由 JS 注入) -->
+        <g class="bee-fly"><g id="homeBee" transform="translate(300,92) scale(1.2)"></g></g>
       </svg>
       <p style="text-align:center; color:var(--text-muted); margin:12px 0 0; font-size:0.9rem;">
         🌼 全世界的蜂類有 2 萬多種，其中超過 <strong style="color:var(--color-cyan)">9 成</strong> 都是「獨居蜂」喔！
@@ -248,16 +268,9 @@
               <rect x="308" y="92" width="120" height="46" fill="#7a4a22"/>
               <text x="368" y="120" font-size="22" text-anchor="middle">🧱</text>
             </g>
-            <!-- the mother bee -->
+            <!-- the mother bee (寫實，由 JS 注入) -->
             <g id="motherBee" transform="translate(400,60)">
-              <g transform="scale(0.8)">
-                <ellipse cx="0" cy="0" rx="16" ry="11" fill="#ffd166"/>
-                <rect x="-12" y="-9" width="6" height="18" fill="#1a1a1a" rx="2"/>
-                <rect x="-2" y="-10" width="6" height="20" fill="#1a1a1a" rx="2"/>
-                <circle cx="14" cy="-3" r="6" fill="#1a1a1a"/>
-                <ellipse class="wing-l" cx="-6" cy="-9" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
-                <ellipse class="wing-r" cx="8" cy="-9" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
-              </g>
+              <g id="motherBeeInner" transform="scale(0.62)"></g>
             </g>
           </svg>
 

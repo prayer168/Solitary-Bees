@@ -34,6 +34,8 @@ html, body {
   background: var(--bg-dark);
   color: var(--text-main);
   min-height: 100%;
+  font-size: 18px;
+  line-height: 1.85;
 }
 
 body {
@@ -563,8 +565,42 @@ input[type="range"] {
 
 .cell-grow { transition: opacity 0.4s ease; }
 
+/* ---------- 寫實蜜蜂：翅膀拍動 / 觸角 / 腳 ---------- */
+.fwing, .hwing {
+  transform-box: fill-box;
+  transform-origin: 10% 80%;
+}
+.fwing { animation: wingBeat 0.07s linear infinite alternate; }
+.hwing { animation: wingBeat 0.07s linear infinite alternate; opacity: 0.55; }
+@keyframes wingBeat {
+  from { transform: rotate(-14deg) scaleY(1); }
+  to   { transform: rotate(10deg) scaleY(0.82); }
+}
+
+.antenna { transform-box: fill-box; transform-origin: 0% 100%; animation: antennaTwitch 2.6s ease-in-out infinite; }
+.antenna.a2 { animation-delay: 0.4s; }
+@keyframes antennaTwitch {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(7deg); }
+}
+
+.leg { transform-box: fill-box; transform-origin: top center; animation: legPaddle 0.9s ease-in-out infinite alternate; }
+.leg.l2 { animation-delay: 0.15s; }
+.leg.l3 { animation-delay: 0.3s; }
+@keyframes legPaddle {
+  from { transform: rotate(-5deg); }
+  to   { transform: rotate(6deg); }
+}
+
+.hover-bob { transform-box: fill-box; animation: hoverBob 2.8s ease-in-out infinite; }
+@keyframes hoverBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .bee-fly, .wing-l, .wing-r, .flower-sway, .pollen, .entrance-glow, .bee-enter {
+  .bee-fly, .wing-l, .wing-r, .flower-sway, .pollen, .entrance-glow, .bee-enter,
+  .fwing, .hwing, .antenna, .leg, .hover-bob {
     animation: none !important;
   }
 }
@@ -588,8 +624,61 @@ input[type="range"] {
 }
 
 @media (max-width: 480px) {
-  .hero h1 { font-size: 1.5rem; }
-  .panel-title { font-size: 1.15rem; }
-  .nav-tab { font-size: 0.78rem; padding: 7px 12px; }
-  .navbar .brand { font-size: 1rem; }
+  .hero h1 { font-size: 1.7rem; }
+  .panel-title { font-size: 1.3rem; }
+  .nav-tab { font-size: 0.92rem; padding: 8px 13px; }
+  .navbar .brand { font-size: 1.15rem; }
+}
+
+/* ===================================================
+   文字放大覆寫（提升課堂投影與閱讀清晰度）
+   =================================================== */
+.panel-title { font-size: 1.75rem; }
+.badge { font-size: 0.95rem; padding: 5px 14px; }
+.nav-tab { font-size: 0.98rem; padding: 9px 18px; }
+.navbar .brand { font-size: 1.4rem; }
+
+.hero h1 { font-size: 2.6rem; }
+.hero p { font-size: 1.25rem; line-height: 2; max-width: 660px; }
+
+.glass-card { padding: 24px; }
+.glass-card p, .glass-card li { font-size: 1.15rem; line-height: 2; }
+
+.goal-card .icon { font-size: 2.6rem; }
+.goal-card h3 { font-size: 1.25rem; }
+.goal-card p { font-size: 1.05rem; }
+
+.compare-card h3 { font-size: 1.4rem; }
+.compare-card ul { font-size: 1.12rem; line-height: 2; }
+
+.exp-box { font-size: 1.1rem; line-height: 1.95; padding: 16px; }
+.sidebar-block h4 { font-size: 1.15rem; }
+.data-row { font-size: 1.1rem; }
+
+.stage-display h3 { font-size: 1.6rem; }
+.stage-display p { font-size: 1.12rem; }
+
+.selector-btn { font-size: 1.08rem; padding: 11px 20px; }
+.life-item, .material-item { font-size: 1.12rem; }
+.life-detail h3 { font-size: 1.5rem; }
+.life-detail .verdict { font-size: 1.05rem; }
+.life-detail p { font-size: 1.15rem; }
+
+.feedback-box { font-size: 1.12rem; line-height: 1.95; }
+.btn { font-size: 1.15rem; padding: 13px 36px; }
+
+.quiz-question { font-size: 1.4rem; }
+.option-btn { font-size: 1.18rem; padding: 14px 18px; }
+.quiz-explain { font-size: 1.08rem; line-height: 1.9; }
+.result-card .score { font-size: 3.6rem; }
+.result-card p { font-size: 1.18rem; }
+
+.footer-hint { font-size: 1rem; }
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 2rem; }
+  .panel-title { font-size: 1.45rem; }
+  .glass-card p, .glass-card li, .compare-card ul, .life-detail p { font-size: 1.05rem; }
+  .quiz-question { font-size: 1.2rem; }
+  .option-btn { font-size: 1.05rem; }
 }

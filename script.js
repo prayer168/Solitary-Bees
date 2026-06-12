@@ -2,6 +2,98 @@
    獨居蜂的秘密生活 - 互動邏輯
    =================================================== */
 
+/* ===================================================
+   寫實蜜蜂 SVG 產生器
+   回傳一段 <g> 內容（蜂體在原點附近，頭朝右），
+   外層再用 transform 定位 / 縮放。
+   opts: thorax, abdomen, stripe, hair, eye, stripes(數), shiny
+   =================================================== */
+let _beeUID = 0;
+function realBee(opts = {}){
+  const o = Object.assign({
+    thorax: 'url(#amberG)',
+    abdomen: 'url(#amberG)',
+    stripe: '#1a1a1a',
+    hair: '#f5deb3',
+    eye: 'url(#eyeG)',
+    stripes: 3,
+    shiny: false,
+    wings: true
+  }, opts);
+  const id = 'bee' + (_beeUID++);
+
+  // 腹部條紋（夾在腹部橢圓內）
+  let stripeBands = '';
+  if (o.stripes > 0){
+    for (let i = 0; i < o.stripes; i++){
+      const x = -44 + i * 12;
+      stripeBands += `<rect x="${x}" y="-20" width="6.5" height="40" rx="3" fill="${o.stripe}" opacity="0.92"/>`;
+    }
+  }
+
+  // 胸部絨毛（短毛放射）
+  let fuzz = '';
+  for (let a = 0; a < 18; a++){
+    const ang = (a / 18) * Math.PI * 2;
+    const r1 = 13, r2 = 17.5;
+    const cx = 8, cy = -2;
+    const x1 = cx + Math.cos(ang) * r1, y1 = cy + Math.sin(ang) * r1;
+    const x2 = cx + Math.cos(ang) * r2, y2 = cy + Math.sin(ang) * r2;
+    fuzz += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${o.hair}" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>`;
+  }
+
+  const shineAb = o.shiny
+    ? `<ellipse cx="-26" cy="-6" rx="14" ry="5" fill="#ffffff" opacity="0.18"/>`
+    : '';
+  const shineTh = `<ellipse cx="3" cy="-8" rx="7" ry="3.5" fill="#ffffff" opacity="0.2"/>`;
+
+  const wings = o.wings ? `
+    <g class="hwing"><path d="M4,-8 C -10,-26 -34,-26 -44,-15 C -34,-8 -14,-7 4,-5 Z"
+        fill="url(#wingG)" stroke="#bfe6ff" stroke-width="0.6"/>
+      <path d="M0,-8 C -14,-16 -28,-16 -38,-13" fill="none" stroke="#9fd0ee" stroke-width="0.5" opacity="0.7"/></g>
+    <g class="fwing"><path d="M6,-10 C -10,-44 -46,-40 -56,-22 C -46,-13 -16,-12 6,-7 Z"
+        fill="url(#wingG)" stroke="#cdeeff" stroke-width="0.7"/>
+      <path d="M2,-10 C -14,-30 -34,-32 -50,-24" fill="none" stroke="#a9d8f5" stroke-width="0.5" opacity="0.7"/>
+      <path d="M-2,-9 C -16,-22 -30,-24 -44,-21" fill="none" stroke="#a9d8f5" stroke-width="0.5" opacity="0.6"/></g>` : '';
+
+  return `
+  <g id="${id}">
+    ${wings}
+    <!-- 六隻腳 -->
+    <g class="leg"   stroke="#15110a" stroke-width="2.4" stroke-linecap="round" fill="none">
+      <path d="M14,9 l5,13 l-4,8"/></g>
+    <g class="leg l2" stroke="#15110a" stroke-width="2.4" stroke-linecap="round" fill="none">
+      <path d="M4,11 l1,15 l-5,8"/></g>
+    <g class="leg l3" stroke="#15110a" stroke-width="2.4" stroke-linecap="round" fill="none">
+      <path d="M-6,10 l-3,14 l3,8"/></g>
+    <!-- 腹部 -->
+    <clipPath id="${id}clip"><ellipse cx="-22" cy="1" rx="29" ry="17"/></clipPath>
+    <ellipse cx="-22" cy="1" rx="29" ry="17" fill="${o.abdomen}"/>
+    <g clip-path="url(#${id}clip)">${stripeBands}${shineAb}</g>
+    <ellipse cx="-22" cy="1" rx="29" ry="17" fill="none" stroke="#000" stroke-width="0.6" opacity="0.25"/>
+    <!-- 胸部 -->
+    ${fuzz}
+    <ellipse cx="8" cy="-2" rx="15" ry="14.5" fill="${o.thorax}"/>
+    ${shineTh}
+    <!-- 頭 -->
+    <circle cx="29" cy="-3" r="11" fill="${o.thorax}"/>
+    <ellipse cx="33" cy="-4" rx="4.2" ry="6.5" fill="${o.eye}"/>
+    <circle cx="31.5" cy="-6" r="1.3" fill="#fff" opacity="0.8"/>
+    <!-- 觸角 -->
+    <g class="antenna"  stroke="#15110a" stroke-width="1.8" stroke-linecap="round" fill="none">
+      <path d="M30,-12 Q 36,-22 42,-24"/></g>
+    <g class="antenna a2" stroke="#15110a" stroke-width="1.8" stroke-linecap="round" fill="none">
+      <path d="M27,-13 Q 31,-24 37,-28"/></g>
+    <!-- 口器 -->
+    <line x1="36" y1="3" x2="40" y2="9" stroke="#7a5a2f" stroke-width="1.6" stroke-linecap="round"/>
+  </g>`;
+}
+
+/* 包成完整可獨立顯示的 SVG 場景用的蜜蜂（含外層定位） */
+function beeAt(x, y, scale = 1, opts = {}){
+  return `<g transform="translate(${x},${y}) scale(${scale})">${realBee(opts)}</g>`;
+}
+
 /* ---------- 分頁切換 (SPA Tab) ---------- */
 function go(tab){
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -22,6 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
   showFriend(0);
   buildSpeciesList();
   showSpecies(0);
+
+  // 注入寫實蜜蜂
+  const homeBee = document.getElementById('homeBee');
+  if (homeBee) homeBee.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
+  const motherInner = document.getElementById('motherBeeInner');
+  if (motherInner) motherInner.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
 });
 
 /* ===================================================
@@ -31,79 +129,73 @@ const speciesData = [
   {
     name: '🍃 切葉蜂',
     latin: 'Megachile spp.',
-    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="140" fill="#0a1430" rx="12"/>
-      <ellipse cx="60" cy="80" rx="40" ry="28" fill="#1f7a4d"/>
-      <path d="M40 60 A 30 30 0 0 1 80 60 Z" fill="#0a1430"/>
-      <g transform="translate(135,70)">
-        <ellipse class="wing-l" cx="-6" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse class="wing-r" cx="8" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse cx="0" cy="0" rx="18" ry="12" fill="#ffd166"/>
-        <rect x="-13" y="-10" width="7" height="20" fill="#1a1a1a" rx="2"/>
-        <rect x="-1" y="-11" width="7" height="22" fill="#1a1a1a" rx="2"/>
-        <circle cx="15" cy="-3" r="6" fill="#1a1a1a"/>
-      </g>
+    icon: `<svg class="scene" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="180" fill="#0a1430" rx="12"/>
+      <!-- 葉片與剪痕 -->
+      <ellipse cx="78" cy="110" rx="58" ry="42" fill="#1f7a4d"/>
+      <ellipse cx="78" cy="110" rx="58" ry="42" fill="none" stroke="#2fa365" stroke-width="2"/>
+      <line x1="40" y1="135" x2="120" y2="78" stroke="#0d5535" stroke-width="2"/>
+      <path d="M120 70 A 26 26 0 0 0 120 122 Z" fill="#0a1430"/>
+      <circle class="entrance-glow" cx="120" cy="96" r="4" fill="#9be8c0"/>
+      ${beeAt(218, 92, 1.7, { thorax:'url(#blackG)', abdomen:'url(#blackG)', stripe:'#d7dde2', hair:'#ffffff', stripes:4 })}
     </svg>`,
-    feature: '身體胖胖的，嘴巴像一把小剪刀。',
+    feature: '身體胖胖的，胸部有白色絨毛，嘴巴有一對像小剪刀的大顎。',
     nest: '會把樹葉剪成一片片圓形或半圓形，捲起來當作巢室的「牆壁」和「門」，築巢在空心管子或土洞裡。',
     fun: '如果發現院子裡的葉子邊緣被剪出整齊的圓弧缺口，很可能就是切葉蜂來「借」材料蓋房子了！'
   },
   {
     name: '🧱 壁蜂',
     latin: 'Osmia spp.',
-    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="140" fill="#0a1430" rx="12"/>
-      <rect x="20" y="40" width="80" height="70" fill="#7a4a22" rx="4"/>
-      <circle class="entrance-glow" cx="45" cy="65" r="7" fill="#1a1208"/>
-      <circle class="entrance-glow" cx="75" cy="85" r="7" fill="#1a1208"/>
-      <circle cx="60" cy="50" r="7" fill="#1a1208"/>
-      <g transform="translate(140,70)">
-        <ellipse class="wing-l" cx="-6" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse class="wing-r" cx="8" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse cx="0" cy="0" rx="18" ry="12" fill="#00b4d8"/>
-        <rect x="-13" y="-10" width="7" height="20" fill="#1a1a1a" rx="2"/>
-        <rect x="-1" y="-11" width="7" height="22" fill="#1a1a1a" rx="2"/>
-        <circle cx="15" cy="-3" r="6" fill="#1a1a1a"/>
+    icon: `<svg class="scene" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="180" fill="#0a1430" rx="12"/>
+      <!-- 磚牆與泥封巢洞 -->
+      <rect x="20" y="30" width="120" height="120" fill="#7a4a22" rx="4"/>
+      <g stroke="#5a3417" stroke-width="2">
+        <line x1="20" y1="70" x2="140" y2="70"/><line x1="20" y1="110" x2="140" y2="110"/>
+        <line x1="80" y1="30" x2="80" y2="70"/><line x1="50" y1="70" x2="50" y2="110"/>
+        <line x1="110" y1="110" x2="110" y2="150"/>
       </g>
+      <circle cx="55" cy="50" r="9" fill="#1a1208"/>
+      <ellipse class="entrance-glow" cx="95" cy="90" rx="10" ry="9" fill="#3a2410"/>
+      <circle cx="60" cy="130" r="9" fill="#1a1208"/>
+      ${beeAt(228, 92, 1.7, { thorax:'url(#tealG)', abdomen:'url(#tealG)', stripe:'#063b36', hair:'#bdf5e6', stripes:2, shiny:true })}
     </svg>`,
-    feature: '身體常帶有金屬般的藍綠光澤，看起來閃閃發亮。',
+    feature: '身體常帶有金屬般的藍綠光澤，胸部毛茸茸，看起來閃閃發亮。',
     nest: '喜歡利用牆壁縫隙、土壁上的小洞，或現成的空心管築巢，再用泥土把巢室一格一格隔開、封起來。',
     fun: '「壁蜂」的名字就是因為牠常常在土牆、磚牆的小洞裡築巢，是很好的果樹授粉幫手。'
   },
   {
     name: '🪵 木蜂',
     latin: 'Xylocopa spp.',
-    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="140" fill="#0a1430" rx="12"/>
-      <rect x="15" y="55" width="90" height="40" fill="#5a3a1f" rx="6"/>
-      <ellipse class="entrance-glow" cx="55" cy="75" rx="9" ry="9" fill="#1a1208"/>
-      <g transform="translate(140,70)">
-        <ellipse class="wing-l" cx="-8" cy="-12" rx="13" ry="8" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse class="wing-r" cx="10" cy="-12" rx="13" ry="8" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse cx="0" cy="0" rx="24" ry="16" fill="#1a1a2e"/>
-        <ellipse cx="-4" cy="0" rx="8" ry="15" fill="#222"/>
-        <circle cx="20" cy="-4" r="8" fill="#1a1a1a"/>
+    icon: `<svg class="scene" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="180" fill="#0a1430" rx="12"/>
+      <!-- 木頭與鑽出的圓形隧道口 -->
+      <rect x="14" y="64" width="150" height="58" fill="#5a3a1f" rx="8"/>
+      <rect x="14" y="64" width="150" height="58" fill="none" stroke="#3f2814" stroke-width="2" rx="8"/>
+      <g stroke="#6e4a26" stroke-width="1.5" opacity="0.6">
+        <line x1="30" y1="64" x2="34" y2="122"/><line x1="120" y1="64" x2="124" y2="122"/>
       </g>
+      <ellipse class="entrance-glow" cx="70" cy="93" rx="13" ry="13" fill="#120c06"/>
+      <circle cx="70" cy="93" r="13" fill="none" stroke="#2a1c0e" stroke-width="2"/>
+      ${beeAt(232, 88, 2.0, { thorax:'url(#blackG)', abdomen:'url(#blackG)', stripe:'#000', hair:'#3a3550', stripes:0, shiny:true })}
     </svg>`,
-    feature: '台灣最大的蜂之一，全身黑藍色，胸部毛茸茸像顆絨毛球，飛行時聲音很大但不兇。',
+    feature: '台灣最大的蜂之一，全身黑亮帶藍紫光澤，胸部毛茸茸像顆絨毛球，飛行時聲音很大但不兇。',
     nest: '會用強壯的口器在乾燥的木頭、竹子或木製欄杆上鑽出隧道狀的巢，一間接一間排列。',
     fun: '木蜂飛行聲音大，常讓人以為很可怕，但牠其實非常溫和，通常只是路過巡視自己的「家」。'
   },
   {
     name: '🕳️ 隧蜂',
     latin: 'Halictidae / Andrenidae',
-    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="140" fill="#0a1430" rx="12"/>
-      <ellipse cx="55" cy="105" rx="55" ry="14" fill="#3a2410"/>
-      <ellipse class="entrance-glow" cx="55" cy="100" rx="10" ry="6" fill="#1a1208"/>
-      <g transform="translate(140,70)">
-        <ellipse class="wing-l" cx="-6" cy="-8" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse class="wing-r" cx="8" cy="-8" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse cx="0" cy="0" rx="15" ry="10" fill="#00f5a0"/>
-        <rect x="-11" y="-8" width="6" height="16" fill="#1a1a1a" rx="2"/>
-        <rect x="-1" y="-9" width="6" height="18" fill="#1a1a1a" rx="2"/>
-        <circle cx="13" cy="-2" r="5" fill="#1a1a1a"/>
-      </g>
+    icon: `<svg class="scene" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="180" fill="#0a1430" rx="12"/>
+      <!-- 泥土地面與小火山狀隧道口 -->
+      <rect x="0" y="120" width="320" height="60" fill="#3a2410"/>
+      <path d="M40 122 Q 75 96 110 122 Z" fill="#4a3018"/>
+      <path d="M40 122 Q 75 96 110 122 Z" fill="none" stroke="#5e3f20" stroke-width="2"/>
+      <ellipse class="entrance-glow" cx="75" cy="118" rx="11" ry="6" fill="#160e05"/>
+      <path d="M150 122 Q 175 104 200 122 Z" fill="#4a3018"/>
+      <ellipse cx="175" cy="119" rx="8" ry="4" fill="#160e05"/>
+      ${beeAt(232, 78, 1.45, { thorax:'url(#tealG)', abdomen:'url(#tealG)', stripe:'#063b36', hair:'#bdf5e6', stripes:2, shiny:true })}
     </svg>`,
     feature: '體型比較小，常有金屬綠或銅色的光澤，動作很快。',
     nest: '在鬆軟的泥土地面挖出垂直的小隧道，地面上常能看到像小火山一樣的「土堆」，那就是隧道的入口。',
@@ -112,18 +204,16 @@ const speciesData = [
   {
     name: '🟧 條蜂',
     latin: 'Anthophora spp.',
-    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="140" fill="#0a1430" rx="12"/>
-      <path d="M0 110 Q 60 70 140 110 L 200 140 L 0 140 Z" fill="#7a5a35"/>
-      <circle class="entrance-glow" cx="70" cy="98" r="6" fill="#1a1208"/>
-      <circle class="entrance-glow" cx="100" cy="105" r="6" fill="#1a1208"/>
-      <g transform="translate(150,60)">
-        <ellipse class="wing-l" cx="-6" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse class="wing-r" cx="8" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
-        <ellipse cx="0" cy="0" rx="18" ry="12" fill="#ff9f43"/>
-        <rect x="-14" y="-11" width="28" height="5" fill="#1a1a1a" rx="2"/>
-        <rect x="-14" y="2" width="28" height="5" fill="#1a1a1a" rx="2"/>
-        <circle cx="15" cy="-3" r="6" fill="#1a1a1a"/>
+    icon: `<svg class="scene" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="180" fill="#0a1430" rx="12"/>
+      <!-- 乾燥土坡與多個巢口 -->
+      <path d="M0 150 Q 90 96 220 150 L 320 180 L 0 180 Z" fill="#7a5a35"/>
+      <path d="M0 150 Q 90 96 220 150" fill="none" stroke="#9a774a" stroke-width="2"/>
+      <ellipse class="entrance-glow" cx="95" cy="132" rx="7" ry="7" fill="#160e05"/>
+      <ellipse class="entrance-glow" cx="140" cy="140" rx="7" ry="7" fill="#160e05"/>
+      <circle cx="180" cy="146" r="6" fill="#160e05"/>
+      <g class="hover-bob">
+        ${beeAt(232, 70, 1.55, { thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#f3e6c4', hair:'#ffe9b0', stripes:4 })}
       </g>
     </svg>`,
     feature: '身體毛茸茸，常有橘黃色或灰白色的條紋，飛行速度很快，很像迷你版的熊蜂。',
