@@ -120,6 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (homeBee) homeBee.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
   const motherInner = document.getElementById('motherBeeInner');
   if (motherInner) motherInner.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
+  const flowerBee = document.getElementById('flowerBee');
+  if (flowerBee) flowerBee.innerHTML =
+    realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3, wings:false }) +
+    // 折起的翅膀（停棲狀態）與後腳花粉籃
+    `<path d="M6,-10 C -16,-18 -36,-14 -46,-6 C -34,-2 -12,-4 6,-6 Z" fill="url(#wingG)" stroke="#cdeeff" stroke-width="0.7" opacity="0.85"/>
+     <circle cx="-4" cy="22" r="5.5" fill="#ffb733" stroke="#c77f12" stroke-width="1"/>
+     <circle cx="-4" cy="22" r="2" fill="#ffe9b0" opacity="0.7"/>`;
 });
 
 /* ===================================================
@@ -137,7 +144,13 @@ const speciesData = [
       <line x1="40" y1="135" x2="120" y2="78" stroke="#0d5535" stroke-width="2"/>
       <path d="M120 70 A 26 26 0 0 0 120 122 Z" fill="#0a1430"/>
       <circle class="entrance-glow" cx="120" cy="96" r="4" fill="#9be8c0"/>
-      ${beeAt(218, 92, 1.7, { thorax:'url(#blackG)', abdomen:'url(#blackG)', stripe:'#d7dde2', hair:'#ffffff', stripes:4 })}
+      <!-- 搬著剪下的葉片飛回巢 -->
+      <g class="approach">
+        <g transform="translate(218,92) scale(1.7)">
+          <circle cx="-8" cy="22" r="11" fill="#2fa365" stroke="#1f7a4d" stroke-width="1.5"/>
+          ${realBee({ thorax:'url(#blackG)', abdomen:'url(#blackG)', stripe:'#d7dde2', hair:'#ffffff', stripes:4 })}
+        </g>
+      </g>
     </svg>`,
     feature: '身體胖胖的，胸部有白色絨毛，嘴巴有一對像小剪刀的大顎。',
     nest: '會把樹葉剪成一片片圓形或半圓形，捲起來當作巢室的「牆壁」和「門」，築巢在空心管子或土洞裡。',
@@ -158,7 +171,8 @@ const speciesData = [
       <circle cx="55" cy="50" r="9" fill="#1a1208"/>
       <ellipse class="entrance-glow" cx="95" cy="90" rx="10" ry="9" fill="#3a2410"/>
       <circle cx="60" cy="130" r="9" fill="#1a1208"/>
-      ${beeAt(228, 92, 1.7, { thorax:'url(#tealG)', abdomen:'url(#tealG)', stripe:'#063b36', hair:'#bdf5e6', stripes:2, shiny:true })}
+      <!-- 飛向牆上的巢洞 -->
+      <g class="approach">${beeAt(228, 92, 1.7, { thorax:'url(#tealG)', abdomen:'url(#tealG)', stripe:'#063b36', hair:'#bdf5e6', stripes:2, shiny:true })}</g>
     </svg>`,
     feature: '身體常帶有金屬般的藍綠光澤，胸部毛茸茸，看起來閃閃發亮。',
     nest: '喜歡利用牆壁縫隙、土壁上的小洞，或現成的空心管築巢，再用泥土把巢室一格一格隔開、封起來。',
@@ -177,7 +191,8 @@ const speciesData = [
       </g>
       <ellipse class="entrance-glow" cx="70" cy="93" rx="13" ry="13" fill="#120c06"/>
       <circle cx="70" cy="93" r="13" fill="none" stroke="#2a1c0e" stroke-width="2"/>
-      ${beeAt(232, 88, 2.0, { thorax:'url(#blackG)', abdomen:'url(#blackG)', stripe:'#000', hair:'#3a3550', stripes:0, shiny:true })}
+      <!-- 飛向木頭隧道口 -->
+      <g class="approach">${beeAt(232, 88, 2.0, { thorax:'url(#blackG)', abdomen:'url(#blackG)', stripe:'#000', hair:'#3a3550', stripes:0, shiny:true })}</g>
     </svg>`,
     feature: '台灣最大的蜂之一，全身黑亮帶藍紫光澤，胸部毛茸茸像顆絨毛球，飛行時聲音很大但不兇。',
     nest: '會用強壯的口器在乾燥的木頭、竹子或木製欄杆上鑽出隧道狀的巢，一間接一間排列。',
@@ -195,7 +210,8 @@ const speciesData = [
       <ellipse class="entrance-glow" cx="75" cy="118" rx="11" ry="6" fill="#160e05"/>
       <path d="M150 122 Q 175 104 200 122 Z" fill="#4a3018"/>
       <ellipse cx="175" cy="119" rx="8" ry="4" fill="#160e05"/>
-      ${beeAt(232, 78, 1.45, { thorax:'url(#tealG)', abdomen:'url(#tealG)', stripe:'#063b36', hair:'#bdf5e6', stripes:2, shiny:true })}
+      <!-- 鑽進地面的隧道口 -->
+      <g class="dig-down">${beeAt(232, 78, 1.45, { thorax:'url(#tealG)', abdomen:'url(#tealG)', stripe:'#063b36', hair:'#bdf5e6', stripes:2, shiny:true })}</g>
     </svg>`,
     feature: '體型比較小，常有金屬綠或銅色的光澤，動作很快。',
     nest: '在鬆軟的泥土地面挖出垂直的小隧道，地面上常能看到像小火山一樣的「土堆」，那就是隧道的入口。',
@@ -215,6 +231,10 @@ const speciesData = [
       <g class="hover-bob">
         ${beeAt(232, 70, 1.55, { thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#f3e6c4', hair:'#ffe9b0', stripes:4 })}
       </g>
+      <!-- 飄散的花粉 -->
+      <circle class="pollen" cx="200" cy="95" r="3" fill="#ffd166"/>
+      <circle class="pollen p2" cx="255" cy="100" r="2.5" fill="#ffd166"/>
+      <circle class="pollen p3" cx="225" cy="105" r="2" fill="#ffd166"/>
     </svg>`,
     feature: '身體毛茸茸，常有橘黃色或灰白色的條紋，飛行速度很快，很像迷你版的熊蜂。',
     nest: '喜歡在乾燥的土坡、土牆或河岸的鬆土上挖洞築巢，有時很多隻會選在同一片土坡，但每一隻都有自己的巢。',

@@ -598,9 +598,37 @@ input[type="range"] {
   50% { transform: translateY(-7px); }
 }
 
+/* 飛向巢洞（鑽進去再飛回來） */
+.approach { transform-box: fill-box; animation: approachHole 7s ease-in-out infinite; }
+@keyframes approachHole {
+  0%, 18%   { transform: translate(0,0) scale(1); opacity: 1; }
+  46%       { transform: translate(-118px, 8px) scale(0.5); opacity: 0.9; }
+  52%, 58%  { transform: translate(-130px, 10px) scale(0.32); opacity: 0; }
+  64%       { transform: translate(-118px, 8px) scale(0.5); opacity: 0.9; }
+  92%, 100% { transform: translate(0,0) scale(1); opacity: 1; }
+}
+
+/* 鑽進地面隧道（往下） */
+.dig-down { transform-box: fill-box; animation: digDown 7s ease-in-out infinite; }
+@keyframes digDown {
+  0%, 20%   { transform: translate(0,0) scale(1); opacity: 1; }
+  46%       { transform: translate(-140px, 32px) scale(0.55); opacity: 0.95; }
+  52%, 58%  { transform: translate(-150px, 46px) scale(0.35); opacity: 0; }
+  64%       { transform: translate(-140px, 32px) scale(0.55); opacity: 0.95; }
+  92%, 100% { transform: translate(0,0) scale(1); opacity: 1; }
+}
+
+/* 停在花上採粉：身體小幅律動 */
+.gathering { transform-box: fill-box; animation: gathering 1.4s ease-in-out infinite; }
+@keyframes gathering {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(2px) rotate(3deg); }
+  60% { transform: translateY(0.5px) rotate(-2deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bee-fly, .wing-l, .wing-r, .flower-sway, .pollen, .entrance-glow, .bee-enter,
-  .fwing, .hwing, .antenna, .leg, .hover-bob {
+  .fwing, .hwing, .antenna, .leg, .hover-bob, .approach, .dig-down, .gathering {
     animation: none !important;
   }
 }
