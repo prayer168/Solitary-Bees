@@ -16,6 +16,7 @@
     <button class="nav-tab active" data-tab="home" onclick="go('home')">🏠 開始</button>
     <button class="nav-tab" data-tab="goal" onclick="go('goal')">🎯 學習目標</button>
     <button class="nav-tab" data-tab="meet" onclick="go('meet')">🔍 認識獨居蜂</button>
+    <button class="nav-tab" data-tab="species" onclick="go('species')">📖 蜂種圖鑑</button>
     <button class="nav-tab" data-tab="nest" onclick="go('nest')">🏗️ 築巢觀察</button>
     <button class="nav-tab" data-tab="hotel" onclick="go('hotel')">🏨 蓋昆蟲旅館</button>
     <button class="nav-tab" data-tab="friend" onclick="go('friend')">🌸 好朋友還壞朋友</button>
@@ -179,8 +180,29 @@
         💡 <strong>小提醒：</strong>獨居蜂個性溫和，只要不去抓牠、不弄壞牠的巢，牠們通常不會螫人。看到牠們在花叢忙碌，安靜觀察就好囉！
       </div>
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="go('nest')">下一步：看牠怎麼築巢 →</button>
+        <button class="btn btn-primary" onclick="go('species')">下一步：認識不同的獨居蜂 →</button>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ Species guide ============ -->
+  <section class="panel" id="tab-species">
+    <span class="badge badge-teal">蜂種圖鑑</span>
+    <h2 class="panel-title">📖 蜂種圖鑑</h2>
+    <p style="color:var(--text-muted); margin-top:-8px;">點點左邊的名字，認識台灣常見的幾種獨居蜂。牠們長相、築巢地點都不一樣喔！</p>
+
+    <div class="glass-card">
+      <div class="life-layout">
+        <div class="life-list" id="speciesList">
+          <!-- filled by JS -->
+        </div>
+        <div class="life-detail" id="speciesDetail">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="go('nest')">下一步：看牠怎麼築巢 →</button>
     </div>
   </section>
 

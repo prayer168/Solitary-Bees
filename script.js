@@ -20,7 +20,144 @@ document.addEventListener('DOMContentLoaded', () => {
   buildMaterials();
   buildFriendList();
   showFriend(0);
+  buildSpeciesList();
+  showSpecies(0);
 });
+
+/* ===================================================
+   蜂種圖鑑
+   =================================================== */
+const speciesData = [
+  {
+    name: '🍃 切葉蜂',
+    latin: 'Megachile spp.',
+    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="140" fill="#0a1430" rx="12"/>
+      <ellipse cx="60" cy="80" rx="40" ry="28" fill="#1f7a4d"/>
+      <path d="M40 60 A 30 30 0 0 1 80 60 Z" fill="#0a1430"/>
+      <g transform="translate(135,70)">
+        <ellipse class="wing-l" cx="-6" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse class="wing-r" cx="8" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse cx="0" cy="0" rx="18" ry="12" fill="#ffd166"/>
+        <rect x="-13" y="-10" width="7" height="20" fill="#1a1a1a" rx="2"/>
+        <rect x="-1" y="-11" width="7" height="22" fill="#1a1a1a" rx="2"/>
+        <circle cx="15" cy="-3" r="6" fill="#1a1a1a"/>
+      </g>
+    </svg>`,
+    feature: '身體胖胖的，嘴巴像一把小剪刀。',
+    nest: '會把樹葉剪成一片片圓形或半圓形，捲起來當作巢室的「牆壁」和「門」，築巢在空心管子或土洞裡。',
+    fun: '如果發現院子裡的葉子邊緣被剪出整齊的圓弧缺口，很可能就是切葉蜂來「借」材料蓋房子了！'
+  },
+  {
+    name: '🧱 壁蜂',
+    latin: 'Osmia spp.',
+    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="140" fill="#0a1430" rx="12"/>
+      <rect x="20" y="40" width="80" height="70" fill="#7a4a22" rx="4"/>
+      <circle class="entrance-glow" cx="45" cy="65" r="7" fill="#1a1208"/>
+      <circle class="entrance-glow" cx="75" cy="85" r="7" fill="#1a1208"/>
+      <circle cx="60" cy="50" r="7" fill="#1a1208"/>
+      <g transform="translate(140,70)">
+        <ellipse class="wing-l" cx="-6" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse class="wing-r" cx="8" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse cx="0" cy="0" rx="18" ry="12" fill="#00b4d8"/>
+        <rect x="-13" y="-10" width="7" height="20" fill="#1a1a1a" rx="2"/>
+        <rect x="-1" y="-11" width="7" height="22" fill="#1a1a1a" rx="2"/>
+        <circle cx="15" cy="-3" r="6" fill="#1a1a1a"/>
+      </g>
+    </svg>`,
+    feature: '身體常帶有金屬般的藍綠光澤，看起來閃閃發亮。',
+    nest: '喜歡利用牆壁縫隙、土壁上的小洞，或現成的空心管築巢，再用泥土把巢室一格一格隔開、封起來。',
+    fun: '「壁蜂」的名字就是因為牠常常在土牆、磚牆的小洞裡築巢，是很好的果樹授粉幫手。'
+  },
+  {
+    name: '🪵 木蜂',
+    latin: 'Xylocopa spp.',
+    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="140" fill="#0a1430" rx="12"/>
+      <rect x="15" y="55" width="90" height="40" fill="#5a3a1f" rx="6"/>
+      <ellipse class="entrance-glow" cx="55" cy="75" rx="9" ry="9" fill="#1a1208"/>
+      <g transform="translate(140,70)">
+        <ellipse class="wing-l" cx="-8" cy="-12" rx="13" ry="8" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse class="wing-r" cx="10" cy="-12" rx="13" ry="8" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse cx="0" cy="0" rx="24" ry="16" fill="#1a1a2e"/>
+        <ellipse cx="-4" cy="0" rx="8" ry="15" fill="#222"/>
+        <circle cx="20" cy="-4" r="8" fill="#1a1a1a"/>
+      </g>
+    </svg>`,
+    feature: '台灣最大的蜂之一，全身黑藍色，胸部毛茸茸像顆絨毛球，飛行時聲音很大但不兇。',
+    nest: '會用強壯的口器在乾燥的木頭、竹子或木製欄杆上鑽出隧道狀的巢，一間接一間排列。',
+    fun: '木蜂飛行聲音大，常讓人以為很可怕，但牠其實非常溫和，通常只是路過巡視自己的「家」。'
+  },
+  {
+    name: '🕳️ 隧蜂',
+    latin: 'Halictidae / Andrenidae',
+    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="140" fill="#0a1430" rx="12"/>
+      <ellipse cx="55" cy="105" rx="55" ry="14" fill="#3a2410"/>
+      <ellipse class="entrance-glow" cx="55" cy="100" rx="10" ry="6" fill="#1a1208"/>
+      <g transform="translate(140,70)">
+        <ellipse class="wing-l" cx="-6" cy="-8" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse class="wing-r" cx="8" cy="-8" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse cx="0" cy="0" rx="15" ry="10" fill="#00f5a0"/>
+        <rect x="-11" y="-8" width="6" height="16" fill="#1a1a1a" rx="2"/>
+        <rect x="-1" y="-9" width="6" height="18" fill="#1a1a1a" rx="2"/>
+        <circle cx="13" cy="-2" r="5" fill="#1a1a1a"/>
+      </g>
+    </svg>`,
+    feature: '體型比較小，常有金屬綠或銅色的光澤，動作很快。',
+    nest: '在鬆軟的泥土地面挖出垂直的小隧道，地面上常能看到像小火山一樣的「土堆」，那就是隧道的入口。',
+    fun: '走在校園裸露的泥土地或操場邊，如果看到一個個小土堆中間有洞，可能就是隧蜂的家。'
+  },
+  {
+    name: '🟧 條蜂',
+    latin: 'Anthophora spp.',
+    icon: `<svg class="scene" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="140" fill="#0a1430" rx="12"/>
+      <path d="M0 110 Q 60 70 140 110 L 200 140 L 0 140 Z" fill="#7a5a35"/>
+      <circle class="entrance-glow" cx="70" cy="98" r="6" fill="#1a1208"/>
+      <circle class="entrance-glow" cx="100" cy="105" r="6" fill="#1a1208"/>
+      <g transform="translate(150,60)">
+        <ellipse class="wing-l" cx="-6" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse class="wing-r" cx="8" cy="-9" rx="10" ry="6" fill="#bdf0ff" opacity="0.8"/>
+        <ellipse cx="0" cy="0" rx="18" ry="12" fill="#ff9f43"/>
+        <rect x="-14" y="-11" width="28" height="5" fill="#1a1a1a" rx="2"/>
+        <rect x="-14" y="2" width="28" height="5" fill="#1a1a1a" rx="2"/>
+        <circle cx="15" cy="-3" r="6" fill="#1a1a1a"/>
+      </g>
+    </svg>`,
+    feature: '身體毛茸茸，常有橘黃色或灰白色的條紋，飛行速度很快，很像迷你版的熊蜂。',
+    nest: '喜歡在乾燥的土坡、土牆或河岸的鬆土上挖洞築巢，有時很多隻會選在同一片土坡，但每一隻都有自己的巢。',
+    fun: '春天常能看到牠們在土坡前快速盤旋、進進出出，像在巡邏，但其實只是各自回家而已。'
+  }
+];
+
+function buildSpeciesList(){
+  const list = document.getElementById('speciesList');
+  list.innerHTML = '';
+  speciesData.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'life-item' + (i === 0 ? ' active' : '');
+    div.id = 'species' + i;
+    div.textContent = s.name;
+    div.onclick = () => showSpecies(i);
+    list.appendChild(div);
+  });
+}
+
+function showSpecies(i){
+  document.querySelectorAll('#speciesList .life-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('species' + i)?.classList.add('active');
+  const s = speciesData[i];
+  const d = document.getElementById('speciesDetail');
+  d.innerHTML = `
+    ${s.icon}
+    <h3>${s.name}　<span style="font-size:0.8rem; color:var(--text-muted); font-weight:400;">${s.latin}</span></h3>
+    <p style="line-height:1.9;"><strong style="color:var(--color-cyan);">長相特徵：</strong>${s.feature}</p>
+    <p style="line-height:1.9;"><strong style="color:var(--color-teal);">築巢方式：</strong>${s.nest}</p>
+    <div class="exp-box">💡 ${s.fun}</div>
+  `;
+}
 
 /* ===================================================
    單元二：築巢觀察 滑桿模擬器
