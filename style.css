@@ -575,6 +575,23 @@ input[type="range"] {
 
 .cell-grow { transition: opacity 0.4s ease; }
 
+#carryPollen { transition: opacity 0.4s ease; }
+
+/* 母蜂忙碌工作中：小幅彈動 + 微傾，像在搬東西、挖洞 */
+.bee-work { animation: beeWork 0.5s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes beeWork {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(2.5px) rotate(-4deg); }
+  60% { transform: translateY(0.5px) rotate(3deg); }
+}
+
+/* 封巢動作：快速來回塗抹 */
+.bee-seal { animation: beeSeal 0.35s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes beeSeal {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50% { transform: translateX(-4px) rotate(-6deg); }
+}
+
 /* ---------- 寫實蜜蜂：翅膀拍動 / 觸角 / 腳 ---------- */
 .fwing, .hwing {
   transform-box: fill-box;

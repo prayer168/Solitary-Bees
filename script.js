@@ -314,12 +314,22 @@ function updateNest(v){
 
   // move mother bee along the tube; fly away at the end
   const bee = document.getElementById('motherBee');
+  const shuttle = document.getElementById('motherShuttle');
+  const pollen = document.getElementById('carryPollen');
   const positions = [
-    'translate(400,60)', 'translate(110,55)', 'translate(195,55)',
-    'translate(330,55)', 'translate(470,30)'
+    'translate(400,60)', 'translate(105,58)', 'translate(190,58)',
+    'translate(275,58)', 'translate(470,28)'
   ];
+  bee.style.transition = 'transform 0.7s cubic-bezier(.4,0,.2,1)';
   bee.setAttribute('transform', positions[v]);
-  bee.style.transition = 'transform 0.6s ease';
+
+  // 搬花粉時讓花粉球跟著母蜂出現
+  pollen.style.opacity = (v === 1) ? '1' : '0';
+
+  // 工作中（搬花粉／產卵／蓋牆）時加上忙碌的擺動動畫
+  shuttle.classList.remove('bee-work', 'bee-seal');
+  if (v >= 1 && v <= 3) shuttle.classList.add('bee-work');
+  if (v === 4) shuttle.classList.add('bee-seal');
 }
 
 function resetNest(){

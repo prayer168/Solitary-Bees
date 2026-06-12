@@ -380,9 +380,12 @@
               <rect x="308" y="92" width="120" height="46" fill="#7a4a22"/>
               <text x="368" y="120" font-size="22" text-anchor="middle">🧱</text>
             </g>
-            <!-- the mother bee (寫實，由 JS 注入) -->
+            <!-- the mother bee (寫實，由 JS 注入；面向左、朝管口) -->
             <g id="motherBee" transform="translate(400,60)">
-              <g id="motherBeeInner" transform="scale(0.62)"></g>
+              <g id="motherShuttle">
+                <circle id="carryPollen" cx="2" cy="11" r="6.5" fill="#ffd166" stroke="#c77f12" stroke-width="1" opacity="0"/>
+                <g id="motherBeeInner" transform="scale(-0.62,0.62)"></g>
+              </g>
             </g>
           </svg>
 
