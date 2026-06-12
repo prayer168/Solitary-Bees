@@ -253,6 +253,37 @@
 
     <div class="glass-card">
       <h3 style="color:var(--text-bright); margin-top:0;">比一比：誰是誰？</h3>
+      <!-- 動畫對照圖：左單獨一隻、右一大群 -->
+      <svg class="scene" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px;">
+        <rect width="600" height="200" fill="#0a1430" rx="12"/>
+        <line x1="300" y1="20" x2="300" y2="180" stroke="rgba(255,255,255,0.12)" stroke-dasharray="6 6"/>
+        <text x="150" y="32" text-anchor="middle" fill="#00f5a0" font-size="17" font-weight="700">🐝 獨居蜂：自己住</text>
+        <text x="450" y="32" text-anchor="middle" fill="#ff9f43" font-size="17" font-weight="700">🍯 社會性蜂：一大群</text>
+
+        <!-- 左：一根竹管 + 單獨一隻蜂 -->
+        <g transform="translate(70,90)">
+          <rect x="0" y="0" width="120" height="34" rx="8" fill="#5a3a1f"/>
+          <rect x="6" y="6" width="108" height="22" rx="5" fill="#1a1208"/>
+          <ellipse class="entrance-glow" cx="20" cy="17" rx="7" ry="9" fill="#3a2410"/>
+        </g>
+        <g class="hover-bob"><g id="meetSoloBee" transform="translate(150,70) scale(0.7)"></g></g>
+
+        <!-- 右：蜂巢 + 蜂后 + 一群工蜂 -->
+        <g transform="translate(400,70)">
+          <g fill="#e8a13c" stroke="#9c5a18" stroke-width="1.5">
+            <polygon points="20,0 34,8 34,24 20,32 6,24 6,8"/>
+            <polygon points="50,0 64,8 64,24 50,32 36,24 36,8"/>
+            <polygon points="80,0 94,8 94,24 80,32 66,24 66,8"/>
+            <polygon points="35,28 49,36 49,52 35,60 21,52 21,36"/>
+            <polygon points="65,28 79,36 79,52 65,60 51,52 51,36"/>
+          </g>
+        </g>
+        <g transform="translate(396,72)"><g class="crawl c1"><g transform="scale(0.32)" id="cBee1"></g></g></g>
+        <g transform="translate(452,80)"><g class="crawl c2"><g transform="scale(0.32)" id="cBee2"></g></g></g>
+        <g transform="translate(420,108)"><g class="crawl c3"><g transform="scale(0.32)" id="cBee3"></g></g></g>
+        <g transform="translate(478,112)"><g class="crawl c4"><g transform="scale(0.32)" id="cBee4"></g></g></g>
+        <g transform="translate(440,138)"><g class="crawl c5"><g transform="scale(0.32)" id="cBee5"></g></g></g>
+      </svg>
       <div class="compare-grid">
         <div class="compare-card solitary">
           <h3>🐝 獨居蜂</h3>

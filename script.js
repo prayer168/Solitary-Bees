@@ -48,6 +48,7 @@ function realBee(opts = {}){
   const shineTh = `<ellipse cx="3" cy="-8" rx="7" ry="3.5" fill="#ffffff" opacity="0.2"/>`;
 
   const wings = o.wings ? `
+    <path class="wing-blur" d="M6,-10 C -12,-50 -52,-44 -62,-20 C -50,-10 -16,-12 6,-6 Z" fill="#eaffff"/>
     <g class="hwing"><path d="M4,-8 C -10,-26 -34,-26 -44,-15 C -34,-8 -14,-7 4,-5 Z"
         fill="url(#wingG)" stroke="#bfe6ff" stroke-width="0.6"/>
       <path d="M0,-8 C -14,-16 -28,-16 -38,-13" fill="none" stroke="#9fd0ee" stroke-width="0.5" opacity="0.7"/></g>
@@ -122,6 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (motherInner) motherInner.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
   const hotelBee = document.getElementById('hotelBee');
   if (hotelBee) hotelBee.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
+
+  // 認識獨居蜂：對照插圖
+  const soloBee = document.getElementById('meetSoloBee');
+  if (soloBee) soloBee.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
+  for (let i = 1; i <= 5; i++){
+    const cb = document.getElementById('cBee' + i);
+    if (cb) cb.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3, wings:false });
+  }
   const flowerBee = document.getElementById('flowerBee');
   if (flowerBee) flowerBee.innerHTML =
     realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3, wings:false }) +
