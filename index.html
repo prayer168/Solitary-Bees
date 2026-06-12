@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>獨居蜂的秘密生活｜互動教材</title>
+<meta name="description" content="認識獨居蜂：牠們不住蜂窩、自己築巢、是溫和的授粉小幫手。互動教材，適合國小中高年級。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ Navbar ============ -->
+<nav class="navbar">
+  <div class="brand">🐝 獨居蜂的秘密生活</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-tab="home" onclick="go('home')">🏠 開始</button>
+    <button class="nav-tab" data-tab="goal" onclick="go('goal')">🎯 學習目標</button>
+    <button class="nav-tab" data-tab="meet" onclick="go('meet')">🔍 認識獨居蜂</button>
+    <button class="nav-tab" data-tab="nest" onclick="go('nest')">🏗️ 築巢觀察</button>
+    <button class="nav-tab" data-tab="hotel" onclick="go('hotel')">🏨 蓋昆蟲旅館</button>
+    <button class="nav-tab" data-tab="friend" onclick="go('friend')">🌸 好朋友還壞朋友</button>
+    <button class="nav-tab" data-tab="quiz" onclick="go('quiz')">🏆 闖關大挑戰</button>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- ============ Home ============ -->
+  <section class="panel active" id="tab-home">
+    <div class="hero">
+      <div style="font-size:3.5rem;">🐝</div>
+      <h1>獨居蜂的秘密生活</h1>
+      <p>不是每一隻蜜蜂都住在大蜂窩裡！<br>
+      有一群蜜蜂喜歡自己生活、自己蓋房子，<br>
+      牠們很溫和，還是花朵的好幫手。<br>
+      一起來認識這群可愛的「獨居蜂」吧！</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="go('goal')">開始探索 →</button>
+        <button class="btn btn-secondary" onclick="go('quiz')">直接挑戰</button>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <svg class="scene" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- sky gradient -->
+        <defs>
+          <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a1430"/>
+            <stop offset="100%" stop-color="#102047"/>
+          </linearGradient>
+          <radialGradient id="sunG"><stop offset="0%" stop-color="#ffd166"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+        </defs>
+        <rect width="600" height="240" fill="url(#skyG)" rx="12"/>
+        <circle cx="520" cy="60" r="60" fill="url(#sunG)" opacity="0.5"/>
+        <circle cx="520" cy="60" r="26" fill="#ffd166" opacity="0.9"/>
+
+        <!-- ground -->
+        <rect x="0" y="190" width="600" height="50" fill="#0d2a1a" rx="0"/>
+
+        <!-- flowers -->
+        <g class="flower-sway" style="transform-origin:90px 190px">
+          <rect x="87" y="150" width="5" height="40" fill="#1f7a4d"/>
+          <circle cx="90" cy="148" r="14" fill="#ff9f43"/>
+          <circle cx="90" cy="148" r="6" fill="#ffd166"/>
+        </g>
+        <g class="flower-sway" style="transform-origin:160px 190px; animation-delay:1s">
+          <rect x="157" y="158" width="5" height="32" fill="#1f7a4d"/>
+          <circle cx="160" cy="156" r="12" fill="#ff5e7e"/>
+          <circle cx="160" cy="156" r="5" fill="#ffd166"/>
+        </g>
+        <g class="flower-sway" style="transform-origin:240px 190px; animation-delay:0.5s">
+          <rect x="237" y="152" width="5" height="38" fill="#1f7a4d"/>
+          <circle cx="240" cy="150" r="13" fill="#9d4edd"/>
+          <circle cx="240" cy="150" r="5" fill="#ffd166"/>
+        </g>
+
+        <!-- pollen -->
+        <circle class="pollen" cx="90" cy="148" r="3" fill="#ffd166"/>
+        <circle class="pollen p2" cx="160" cy="156" r="3" fill="#ffd166"/>
+        <circle class="pollen p3" cx="240" cy="150" r="3" fill="#ffd166"/>
+
+        <!-- flying bee -->
+        <g class="bee-fly">
+          <g transform="translate(300,90)">
+            <ellipse class="wing-l" cx="-6" cy="-8" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
+            <ellipse class="wing-r" cx="8" cy="-8" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
+            <ellipse cx="0" cy="0" rx="16" ry="11" fill="#ffd166"/>
+            <rect x="-12" y="-9" width="6" height="18" fill="#1a1a1a" rx="2"/>
+            <rect x="-2" y="-10" width="6" height="20" fill="#1a1a1a" rx="2"/>
+            <circle cx="14" cy="-3" r="6" fill="#1a1a1a"/>
+            <circle cx="16" cy="-4" r="1.6" fill="#fff"/>
+          </g>
+        </g>
+      </svg>
+      <p style="text-align:center; color:var(--text-muted); margin:12px 0 0; font-size:0.9rem;">
+        🌼 全世界的蜂類有 2 萬多種，其中超過 <strong style="color:var(--color-cyan)">9 成</strong> 都是「獨居蜂」喔！
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ Goal ============ -->
+  <section class="panel" id="tab-goal">
+    <span class="badge badge-cyan">單元導覽</span>
+    <h2 class="panel-title">🎯 學習目標</h2>
+    <div class="glass-card">
+      <div class="grid-3">
+        <div class="goal-card">
+          <span class="icon">🔍</span>
+          <h3>觀察與分辨</h3>
+          <p>能說出獨居蜂和一般蜜蜂（社會性蜂）有什麼不一樣。</p>
+        </div>
+        <div class="goal-card">
+          <span class="icon">🏗️</span>
+          <h3>了解築巢</h3>
+          <p>知道獨居蜂怎麼蓋房子、把寶寶和食物放進巢室裡。</p>
+        </div>
+        <div class="goal-card">
+          <span class="icon">🌸</span>
+          <h3>連結生活</h3>
+          <p>明白獨居蜂是溫和的授粉幫手，學會和牠們和平相處。</p>
+        </div>
+      </div>
+    </div>
+    <div class="glass-card">
+      <h3 style="color:var(--color-cyan); margin-top:0;">📖 這份教材會帶你做什麼？</h3>
+      <ul style="line-height:2; color:var(--text-main);">
+        <li><strong>認識獨居蜂</strong>：比一比，找出獨居蜂的特徵。</li>
+        <li><strong>築巢觀察</strong>：拉動滑桿，看母蜂一步步把巢蓋好。</li>
+        <li><strong>蓋昆蟲旅館</strong>：自己挑材料，幫獨居蜂蓋一間家。</li>
+        <li><strong>好朋友還壞朋友</strong>：點點看，了解獨居蜂對我們的幫助。</li>
+        <li><strong>闖關大挑戰</strong>：6 題小測驗，拿到屬於你的徽章！</li>
+      </ul>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="go('meet')">下一步：認識獨居蜂 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Meet ============ -->
+  <section class="panel" id="tab-meet">
+    <span class="badge badge-teal">單元一</span>
+    <h2 class="panel-title">🔍 認識獨居蜂</h2>
+
+    <div class="glass-card">
+      <p style="line-height:1.9;">
+        說到蜜蜂，你可能會想到一大群蜜蜂住在蜂窩裡，還有一隻蜂后。
+        但其實大部分的蜂，都是<strong style="color:var(--color-teal)">自己一個人生活</strong>的「獨居蜂」。
+        每一隻母蜂都是自己的女王，自己蓋房子、自己照顧寶寶。
+      </p>
+    </div>
+
+    <div class="glass-card">
+      <h3 style="color:var(--text-bright); margin-top:0;">比一比：誰是誰？</h3>
+      <div class="compare-grid">
+        <div class="compare-card solitary">
+          <h3>🐝 獨居蜂</h3>
+          <ul>
+            <li><strong>自己住</strong>：一隻母蜂自己生活</li>
+            <li><strong>沒有蜂后</strong>：每隻母蜂都會生寶寶</li>
+            <li><strong>自己蓋家</strong>：在土洞、樹洞或空心管子裡築巢</li>
+            <li><strong>很溫和</strong>：沒有蜂窩要保護，很少螫人</li>
+            <li><strong>不釀蜜</strong>：把花粉花蜜留給寶寶吃</li>
+            <li>例如：壁蜂、切葉蜂、木蜂</li>
+          </ul>
+        </div>
+        <div class="compare-card social">
+          <h3>🍯 社會性蜂（如蜜蜂）</h3>
+          <ul>
+            <li><strong>一大群住一起</strong>：成千上萬隻</li>
+            <li><strong>有蜂后</strong>：只有蜂后生寶寶</li>
+            <li><strong>共用大蜂窩</strong>：大家分工合作</li>
+            <li><strong>會保護家</strong>：被打擾時會成群螫人</li>
+            <li><strong>會釀蜂蜜</strong>：儲存起來過冬</li>
+            <li>例如：蜜蜂、虎頭蜂</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-box" style="margin-top:14px;">
+        💡 <strong>小提醒：</strong>獨居蜂個性溫和，只要不去抓牠、不弄壞牠的巢，牠們通常不會螫人。看到牠們在花叢忙碌，安靜觀察就好囉！
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="go('nest')">下一步：看牠怎麼築巢 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Nest (slider simulator) ============ -->
+  <section class="panel" id="tab-nest">
+    <span class="badge badge-cyan">單元二</span>
+    <h2 class="panel-title">🏗️ 築巢觀察</h2>
+    <p style="color:var(--text-muted); margin-top:-8px;">拉動下面的滑桿，看看母蜂怎麼在一根空心管子裡，一格一格蓋出寶寶的房間。</p>
+
+    <div class="glass-card">
+      <div class="lab-layout">
+        <!-- main view -->
+        <div>
+          <svg class="scene" viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="480" height="220" fill="#0a1430" rx="12"/>
+            <!-- hollow tube -->
+            <rect x="40" y="80" width="400" height="70" fill="#5a3a1f" rx="8"/>
+            <rect x="48" y="90" width="384" height="50" fill="#1a1208" rx="6"/>
+            <!-- cells: 4 chambers -->
+            <!-- chamber 1 -->
+            <g id="cell1" class="cell-grow" opacity="0">
+              <rect x="56" y="92" width="78" height="46" fill="#3a2410"/>
+              <circle cx="80" cy="115" r="14" fill="#ffd166" opacity="0.85"/>
+              <ellipse cx="105" cy="115" rx="9" ry="13" fill="#f1f5f9"/>
+              <rect x="132" y="92" width="6" height="46" fill="#8a5a2f"/>
+            </g>
+            <!-- chamber 2 -->
+            <g id="cell2" class="cell-grow" opacity="0">
+              <rect x="140" y="92" width="78" height="46" fill="#3a2410"/>
+              <circle cx="164" cy="115" r="14" fill="#ffd166" opacity="0.85"/>
+              <ellipse cx="189" cy="115" rx="9" ry="13" fill="#f1f5f9"/>
+              <rect x="216" y="92" width="6" height="46" fill="#8a5a2f"/>
+            </g>
+            <!-- chamber 3 -->
+            <g id="cell3" class="cell-grow" opacity="0">
+              <rect x="224" y="92" width="78" height="46" fill="#3a2410"/>
+              <circle cx="248" cy="115" r="14" fill="#ffd166" opacity="0.85"/>
+              <ellipse cx="273" cy="115" rx="9" ry="13" fill="#f1f5f9"/>
+              <rect x="300" y="92" width="6" height="46" fill="#8a5a2f"/>
+            </g>
+            <!-- mud seal -->
+            <g id="seal" class="cell-grow" opacity="0">
+              <rect x="308" y="92" width="120" height="46" fill="#7a4a22"/>
+              <text x="368" y="120" font-size="22" text-anchor="middle">🧱</text>
+            </g>
+            <!-- the mother bee -->
+            <g id="motherBee" transform="translate(400,60)">
+              <g transform="scale(0.8)">
+                <ellipse cx="0" cy="0" rx="16" ry="11" fill="#ffd166"/>
+                <rect x="-12" y="-9" width="6" height="18" fill="#1a1a1a" rx="2"/>
+                <rect x="-2" y="-10" width="6" height="20" fill="#1a1a1a" rx="2"/>
+                <circle cx="14" cy="-3" r="6" fill="#1a1a1a"/>
+                <ellipse class="wing-l" cx="-6" cy="-9" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
+                <ellipse class="wing-r" cx="8" cy="-9" rx="9" ry="5" fill="#bdf0ff" opacity="0.8"/>
+              </g>
+            </g>
+          </svg>
+
+          <div class="stage-display">
+            <h3 id="stageTitle">第 0 步</h3>
+            <p id="stageDesc">把滑桿往右拉，開始築巢！</p>
+          </div>
+          <input type="range" id="nestSlider" min="0" max="4" value="0" step="1" oninput="updateNest(this.value)">
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted);">
+            <span>找到管子</span><span>放花粉</span><span>產卵</span><span>蓋牆</span><span>封口</span>
+          </div>
+        </div>
+
+        <!-- sidebar -->
+        <div>
+          <div class="sidebar-block">
+            <h4>📊 築巢進度</h4>
+            <div class="data-row"><span>完成步驟</span><span id="dataStep">0 / 4</span></div>
+            <div class="data-row"><span>已蓋巢室</span><span id="dataCells">0 個</span></div>
+            <div class="data-row"><span>狀態</span><span id="dataStatus">準備中</span></div>
+          </div>
+          <div class="exp-box" id="nestExp">
+            獨居蜂媽媽會找一根中空的管子當家。牠在裡面一格一格蓋房間，每一間都放滿花粉、生一顆卵，再用泥土或樹葉把門關起來。
+          </div>
+          <button class="btn btn-secondary" style="width:100%; margin-top:12px;" onclick="resetNest()">🔄 重新開始</button>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="go('hotel')">下一步：幫牠蓋一間家 →</button>
+    </div>
+  </section>
+
+  <!-- ============ Hotel builder ============ -->
+  <section class="panel" id="tab-hotel">
+    <span class="badge badge-purple">單元三</span>
+    <h2 class="panel-title">🏨 蓋昆蟲旅館</h2>
+    <p style="color:var(--text-muted); margin-top:-8px;">獨居蜂需要小洞洞來築巢。點點看下面的材料，幫牠們蓋一間舒服的「昆蟲旅館」吧！</p>
+
+    <div class="glass-card">
+      <div class="lab-layout">
+        <div>
+          <h4 style="color:var(--color-cyan); margin-top:0;">🏗️ 你的昆蟲旅館</h4>
+          <div class="hotel-frame" id="hotelFrame">
+            <span class="empty-hint">點右邊的材料，把它們放進旅館裡 →</span>
+          </div>
+          <div class="feedback-box" id="hotelFeedback">
+            提示：獨居蜂喜歡有<strong>小孔洞</strong>的天然材料。挑挑看哪些適合？
+          </div>
+        </div>
+        <div>
+          <div class="sidebar-block">
+            <h4>🧺 材料籃</h4>
+            <div class="material-list" id="materialList">
+              <!-- filled by JS -->
+            </div>
+          </div>
+          <button class="btn btn-secondary" style="width:100%;" onclick="resetHotel()">🔄 清空重蓋</button>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="go('friend')">下一步：牠是好朋友嗎？ →</button>
+    </div>
+  </section>
+
+  <!-- ============ Friend (life application) ============ -->
+  <section class="panel" id="tab-friend">
+    <span class="badge badge-orange">單元四</span>
+    <h2 class="panel-title">🌸 好朋友還壞朋友？</h2>
+    <p style="color:var(--text-muted); margin-top:-8px;">點點左邊的問題，看看獨居蜂到底是不是我們的好朋友。</p>
+
+    <div class="glass-card">
+      <div class="life-layout">
+        <div class="life-list" id="friendList">
+          <!-- filled by JS -->
+        </div>
+        <div class="life-detail" id="friendDetail">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="go('quiz')">準備好了！去闖關 →</button>
+    </div>
+  </section>
+
+  <!-- ============ Quiz ============ -->
+  <section class="panel" id="tab-quiz">
+    <span class="badge badge-cyan">最終關卡</span>
+    <h2 class="panel-title">🏆 闖關大挑戰</h2>
+    <div class="glass-card quiz-container" id="quizCard">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <div class="footer-hint">🐝 獨居蜂的秘密生活 ｜ 國小自然互動教材 ｜ 安靜觀察，和平相處</div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
