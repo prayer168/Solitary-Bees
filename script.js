@@ -120,6 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (homeBee) homeBee.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
   const motherInner = document.getElementById('motherBeeInner');
   if (motherInner) motherInner.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
+  const hotelBee = document.getElementById('hotelBee');
+  if (hotelBee) hotelBee.innerHTML = realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3 });
   const flowerBee = document.getElementById('flowerBee');
   if (flowerBee) flowerBee.innerHTML =
     realBee({ thorax:'url(#amberG)', abdomen:'url(#amberG)', stripe:'#1a1a1a', hair:'#ffe9b0', stripes:3, wings:false }) +

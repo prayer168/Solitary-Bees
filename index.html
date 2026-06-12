@@ -72,48 +72,127 @@
     </div>
 
     <div class="glass-card">
-      <svg class="scene" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
-        <!-- sky gradient -->
+      <svg class="scene" viewBox="0 0 600 270" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#0a1430"/>
-            <stop offset="100%" stop-color="#102047"/>
+            <stop offset="65%" stop-color="#13234d"/>
+            <stop offset="100%" stop-color="#1d3a5e"/>
           </linearGradient>
           <radialGradient id="sunG"><stop offset="0%" stop-color="#ffd166"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+          <radialGradient id="glowH" cx="50%" cy="100%" r="70%">
+            <stop offset="0%" stop-color="#2a4a6e" stop-opacity="0.9"/><stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <linearGradient id="hillBack" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#163a2c"/><stop offset="100%" stop-color="#0e2a1f"/>
+          </linearGradient>
+          <linearGradient id="hillFront" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1c4a32"/><stop offset="100%" stop-color="#103324"/>
+          </linearGradient>
         </defs>
-        <rect width="600" height="240" fill="url(#skyG)" rx="12"/>
-        <circle cx="520" cy="60" r="60" fill="url(#sunG)" opacity="0.5"/>
-        <circle cx="520" cy="60" r="26" fill="#ffd166" opacity="0.9"/>
+
+        <rect width="600" height="270" fill="url(#skyG)" rx="12"/>
+        <ellipse cx="300" cy="215" rx="380" ry="120" fill="url(#glowH)"/>
+
+        <!-- sun + rays -->
+        <g class="flower-sway" style="transform-origin:520px 58px">
+          <g stroke="#ffd166" stroke-width="2.5" stroke-linecap="round" opacity="0.55">
+            <line x1="520" y1="14" x2="520" y2="2"/><line x1="556" y1="22" x2="564" y2="14"/>
+            <line x1="566" y1="58" x2="580" y2="58"/><line x1="484" y1="22" x2="476" y2="14"/>
+            <line x1="474" y1="58" x2="460" y2="58"/>
+          </g>
+        </g>
+        <circle cx="520" cy="58" r="58" fill="url(#sunG)" opacity="0.45"/>
+        <circle cx="520" cy="58" r="24" fill="#ffe08a"/>
+
+        <!-- clouds -->
+        <g fill="#21376a" opacity="0.55">
+          <g><ellipse cx="120" cy="48" rx="34" ry="16"/><ellipse cx="148" cy="42" rx="26" ry="16"/><ellipse cx="95" cy="42" rx="22" ry="13"/></g>
+          <g opacity="0.8"><ellipse cx="350" cy="36" rx="30" ry="13"/><ellipse cx="375" cy="32" rx="22" ry="13"/></g>
+        </g>
+
+        <!-- hills -->
+        <path d="M0 200 Q 150 150 320 196 T 600 188 L600 270 L0 270 Z" fill="url(#hillBack)"/>
+        <path d="M0 224 Q 180 184 380 222 T 600 216 L600 270 L0 270 Z" fill="url(#hillFront)"/>
 
         <!-- ground -->
-        <rect x="0" y="190" width="600" height="50" fill="#0d2a1a" rx="0"/>
+        <rect x="0" y="244" width="600" height="26" fill="#0c2818"/>
+
+        <!-- grass blades -->
+        <g stroke="#1f7a4d" stroke-width="2.4" stroke-linecap="round" fill="none" opacity="0.8">
+          <path d="M30 248 q -3 -14 2 -22"/><path d="M48 248 q 4 -12 -1 -20"/>
+          <path d="M300 248 q -3 -16 3 -24"/><path d="M318 248 q 4 -12 -1 -20"/>
+          <path d="M560 248 q -3 -14 3 -22"/><path d="M576 248 q 4 -12 -1 -20"/>
+          <path d="M210 248 q -3 -14 3 -22"/><path d="M226 248 q 4 -12 -1 -20"/>
+        </g>
+
+        <!-- 昆蟲旅館 (竹管) -->
+        <g class="flower-sway" style="transform-origin:498px 244px">
+          <rect x="466" y="158" width="66" height="14" fill="#6e4a26" rx="3"/>
+          <rect x="470" y="172" width="58" height="74" fill="#3a2613" rx="4"/>
+          <rect x="470" y="172" width="58" height="74" fill="none" stroke="#6e4a26" stroke-width="3" rx="4"/>
+          <g>
+            <circle cx="484" cy="188" r="7" fill="#caa26a"/><circle cx="484" cy="188" r="3.5" fill="#1a1208"/>
+            <circle cx="500" cy="188" r="7" fill="#caa26a"/><circle cx="500" cy="188" r="3.5" fill="#1a1208"/>
+            <circle cx="516" cy="188" r="7" fill="#caa26a"/><circle cx="516" cy="188" r="3.5" fill="#1a1208"/>
+            <circle cx="484" cy="210" r="7" fill="#caa26a"/><circle cx="484" cy="210" r="3.5" fill="#1a1208"/>
+            <circle class="entrance-glow" cx="500" cy="210" r="7" fill="#caa26a"/><circle cx="500" cy="210" r="3.5" fill="#3a2410"/>
+            <circle cx="516" cy="210" r="7" fill="#caa26a"/><circle cx="516" cy="210" r="3.5" fill="#1a1208"/>
+            <circle cx="492" cy="230" r="7" fill="#caa26a"/><circle cx="492" cy="230" r="3.5" fill="#1a1208"/>
+            <circle cx="508" cy="230" r="7" fill="#caa26a"/><circle cx="508" cy="230" r="3.5" fill="#1a1208"/>
+          </g>
+          <rect x="480" y="246" width="6" height="14" fill="#5a3a1f"/>
+          <rect x="512" y="246" width="6" height="14" fill="#5a3a1f"/>
+        </g>
 
         <!-- flowers -->
-        <g class="flower-sway" style="transform-origin:90px 190px">
-          <rect x="87" y="150" width="5" height="40" fill="#1f7a4d"/>
-          <circle cx="90" cy="148" r="14" fill="#ff9f43"/>
-          <circle cx="90" cy="148" r="6" fill="#ffd166"/>
+        <g class="flower-sway" style="transform-origin:60px 246px">
+          <rect x="57" y="196" width="5" height="50" fill="#1f7a4d"/>
+          <ellipse cx="48" cy="214" rx="9" ry="4" fill="#1f7a4d"/>
+          <g fill="#ff9f43"><circle cx="60" cy="183" r="7"/><circle cx="73" cy="190" r="7"/><circle cx="70" cy="204" r="7"/><circle cx="50" cy="204" r="7"/><circle cx="47" cy="190" r="7"/></g>
+          <circle cx="60" cy="194" r="6" fill="#ffd166"/>
         </g>
-        <g class="flower-sway" style="transform-origin:160px 190px; animation-delay:1s">
-          <rect x="157" y="158" width="5" height="32" fill="#1f7a4d"/>
-          <circle cx="160" cy="156" r="12" fill="#ff5e7e"/>
-          <circle cx="160" cy="156" r="5" fill="#ffd166"/>
+        <g class="flower-sway" style="transform-origin:120px 246px; animation-delay:0.6s">
+          <rect x="117" y="206" width="5" height="40" fill="#1f7a4d"/>
+          <g fill="#ff5e7e"><circle cx="120" cy="196" r="6"/><circle cx="131" cy="202" r="6"/><circle cx="127" cy="214" r="6"/><circle cx="111" cy="214" r="6"/><circle cx="109" cy="202" r="6"/></g>
+          <circle cx="120" cy="205" r="5" fill="#ffd166"/>
         </g>
-        <g class="flower-sway" style="transform-origin:240px 190px; animation-delay:0.5s">
-          <rect x="237" y="152" width="5" height="38" fill="#1f7a4d"/>
-          <circle cx="240" cy="150" r="13" fill="#9d4edd"/>
-          <circle cx="240" cy="150" r="5" fill="#ffd166"/>
+        <g class="flower-sway" style="transform-origin:180px 246px; animation-delay:1.1s">
+          <rect x="177" y="190" width="5" height="56" fill="#1f7a4d"/>
+          <ellipse cx="190" cy="212" rx="9" ry="4" fill="#1f7a4d"/>
+          <g fill="#9d4edd"><circle cx="180" cy="178" r="7"/><circle cx="193" cy="185" r="7"/><circle cx="190" cy="199" r="7"/><circle cx="170" cy="199" r="7"/><circle cx="167" cy="185" r="7"/></g>
+          <circle cx="180" cy="189" r="6" fill="#ffd166"/>
+        </g>
+        <g class="flower-sway" style="transform-origin:250px 246px; animation-delay:0.3s">
+          <rect x="247" y="200" width="5" height="46" fill="#1f7a4d"/>
+          <g fill="#00b4d8"><circle cx="250" cy="190" r="6"/><circle cx="261" cy="196" r="6"/><circle cx="257" cy="208" r="6"/><circle cx="241" cy="208" r="6"/><circle cx="239" cy="196" r="6"/></g>
+          <circle cx="250" cy="199" r="5" fill="#ffd166"/>
+        </g>
+        <g class="flower-sway" style="transform-origin:340px 246px; animation-delay:0.9s">
+          <rect x="337" y="194" width="5" height="52" fill="#1f7a4d"/>
+          <ellipse cx="328" cy="214" rx="9" ry="4" fill="#1f7a4d"/>
+          <g fill="#ffd166"><circle cx="340" cy="182" r="7"/><circle cx="353" cy="189" r="7"/><circle cx="350" cy="203" r="7"/><circle cx="330" cy="203" r="7"/><circle cx="327" cy="189" r="7"/></g>
+          <circle cx="340" cy="193" r="6" fill="#ff9f43"/>
+        </g>
+
+        <!-- 蝴蝶 -->
+        <g class="pollen" style="animation-duration:9s">
+          <g transform="translate(400,120)">
+            <path d="M0 0 Q -12 -10 -16 2 Q -12 12 0 4 Z" fill="#ff9f43" opacity="0.85"/>
+            <path d="M0 0 Q 12 -10 16 2 Q 12 12 0 4 Z" fill="#ffd166" opacity="0.85"/>
+            <line x1="0" y1="-3" x2="0" y2="6" stroke="#1a1a1a" stroke-width="1.6"/>
+          </g>
         </g>
 
         <!-- pollen -->
-        <circle class="pollen" cx="90" cy="148" r="3" fill="#ffd166"/>
-        <circle class="pollen p2" cx="160" cy="156" r="3" fill="#ffd166"/>
-        <circle class="pollen p3" cx="240" cy="150" r="3" fill="#ffd166"/>
+        <circle class="pollen" cx="60" cy="190" r="3" fill="#ffd166"/>
+        <circle class="pollen p2" cx="180" cy="186" r="3" fill="#ffd166"/>
+        <circle class="pollen p3" cx="340" cy="190" r="3" fill="#ffd166"/>
 
-        <!-- flying bee (寫實，由 JS 注入) -->
-        <g class="bee-fly"><g id="homeBee" transform="translate(300,92) scale(1.2)"></g></g>
-        <!-- 停在紫花上採花粉的蜂（由 JS 注入） -->
-        <g class="gathering"><g id="flowerBee" transform="translate(244,134) scale(0.85) rotate(-12)"></g></g>
+        <!-- 蜜蜂（寫實，由 JS 注入） -->
+        <g class="bee-fly"><g id="homeBee" transform="translate(290,86) scale(1.15)"></g></g>
+        <g class="gathering"><g id="flowerBee" transform="translate(180,176) scale(0.8) rotate(-14)"></g></g>
+        <g class="hover-bob" style="animation-delay:0.8s"><g id="hotelBee" transform="translate(440,176) scale(0.82)"></g></g>
       </svg>
       <p style="text-align:center; color:var(--text-muted); margin:12px 0 0; font-size:0.9rem;">
         🌼 全世界的蜂類有 2 萬多種，其中超過 <strong style="color:var(--color-cyan)">9 成</strong> 都是「獨居蜂」喔！
