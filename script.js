@@ -504,20 +504,31 @@ function startHotelOperation(){
   btn.disabled = true;
   const ns = 'http://www.w3.org/2000/svg';
   goodTargets.forEach((t, idx) => {
+    const delay = idx * 0.25;
+
     const g = document.createElementNS(ns, 'g');
     g.setAttribute('transform', `translate(${t.x},${t.y})`);
     const fly = document.createElementNS(ns, 'g');
     fly.setAttribute('class', 'hotel-bee-fly');
-    fly.style.animationDelay = (idx * 0.18) + 's';
+    fly.style.animationDelay = delay + 's';
     const flip = document.createElementNS(ns, 'g');
     flip.setAttribute('transform', 'scale(-0.32,0.32)');
     flip.innerHTML = realBee({ stripes: 3 });
     fly.appendChild(flip);
     g.appendChild(fly);
     beesLayer.appendChild(g);
+
+    // 蜂飛抵洞口時，洞口會亮一下，像是蜂搬進新家點亮燈火
+    const glow = document.createElementNS(ns, 'circle');
+    glow.setAttribute('class', 'hole-glow');
+    glow.setAttribute('cx', t.x);
+    glow.setAttribute('cy', t.y);
+    glow.setAttribute('r', 15);
+    glow.style.animationDelay = (delay + 1.6) + 's';
+    beesLayer.appendChild(glow);
   });
 
-  const totalDuration = goodTargets.length * 180 + 1500;
+  const totalDuration = goodTargets.length * 250 + 1900;
   setTimeout(() => {
     fb.className = 'feedback-box good';
     let msg = `🎉 太棒了！這次共有 <strong>${goodTargets.length}</strong> 隻獨居蜂搬進來住囉！牠們最喜歡有小孔洞的天然材料。`;

@@ -427,13 +427,27 @@ input[type="range"] {
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
-  animation: hotelBeeIn 1.5s cubic-bezier(.3,.6,.4,1) forwards;
+  animation: hotelBeeIn 1.9s cubic-bezier(.32,.6,.3,1) forwards;
 }
 @keyframes hotelBeeIn {
-  0%   { transform: translate(80px, -28px) scale(1.3); opacity: 0; }
-  18%  { opacity: 1; }
-  70%  { transform: translate(2px, -1px) scale(1); opacity: 1; }
-  100% { transform: translate(-2px, 2px) scale(0.4); opacity: 0; }
+  0%   { transform: translate(150px, -65px) scale(1.5) rotate(-14deg); opacity: 0; }
+  14%  { opacity: 1; }
+  45%  { transform: translate(32px, -8px) scale(1.05) rotate(-4deg); opacity: 1; }
+  62%  { transform: translate(8px, 6px) scale(0.95) rotate(4deg); opacity: 1; }
+  80%  { transform: translate(2px, -3px) scale(0.85) rotate(-3deg); opacity: 1; }
+  100% { transform: translate(-2px, 3px) scale(0.32) rotate(0deg); opacity: 0; }
+}
+.hole-glow {
+  fill: #ffd166;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: holeGlowPulse 0.7s ease-out forwards;
+}
+@keyframes holeGlowPulse {
+  0%   { opacity: 0;   transform: scale(1); }
+  35%  { opacity: 0.65; transform: scale(1.5); }
+  100% { opacity: 0;   transform: scale(2); }
 }
 #hotelStartBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
@@ -685,11 +699,12 @@ input[type="range"] {
 @media (prefers-reduced-motion: reduce) {
   .bee-fly, .wing-l, .wing-r, .flower-sway, .pollen, .entrance-glow, .bee-enter,
   .fwing, .hwing, .wing-blur, .antenna, .leg, .hover-bob, .approach, .dig-down, .gathering,
-  .hotel-bee-fly {
+  .hotel-bee-fly, .hole-glow {
     animation: none !important;
   }
   .wing-blur { opacity: 0.18; }
   .hotel-bee-fly { opacity: 1; transform: scale(0.4); }
+  .hole-glow { opacity: 0; }
 }
 
 /* ---------- Footer hint ---------- */
