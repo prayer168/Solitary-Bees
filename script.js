@@ -350,8 +350,10 @@ const materials = [
   { em: '🥤', name: '塑膠瓶',     good: false, why: '塑膠不透氣又會發霉，對蜂寶寶不好喔。' }
 ];
 const HOTEL_FLOORS = 6;
+const HOTEL_SLOTS = 6; // 每層外觀最多顯示的洞口數
 let selectedShelf = null;
 const hotelUsed = new Set(); // 已使用過的材料種類（用於全用過獎勵）
+let shelfData = [];
 
 function buildMaterials(){
   const list = document.getElementById('materialList');
@@ -369,7 +371,9 @@ function buildMaterials(){
 function buildHotelShelves(){
   const frame = document.getElementById('hotelFrame');
   frame.innerHTML = '';
+  shelfData = [];
   for (let i = 0; i < HOTEL_FLOORS; i++){
+    shelfData.push([]);
     const shelf = document.createElement('div');
     shelf.className = 'hotel-shelf';
     shelf.dataset.floor = i;
@@ -378,6 +382,7 @@ function buildHotelShelves(){
     shelf.addEventListener('click', () => selectShelf(i));
     frame.appendChild(shelf);
   }
+  renderHotelExterior();
 }
 
 function selectShelf(i){
@@ -407,6 +412,8 @@ function pickMaterial(i){
   tile.title = m.name;
   shelf.appendChild(tile);
 
+  shelfData[selectedShelf].push(i);
+  renderHotelExterior();
   hotelUsed.add(i);
 
   if (m.good){
@@ -429,9 +436,114 @@ function resetHotel(){
   selectedShelf = null;
   hotelUsed.clear();
   buildHotelShelves();
+  document.getElementById('hotelBeesLayer').innerHTML = '';
   const fb = document.getElementById('hotelFeedback');
   fb.className = 'feedback-box';
   fb.innerHTML = '提示：先點選一層樓（會發出青色光），再點右邊的材料把它放進這一層。獨居蜂喜歡有<strong>小孔洞</strong>的天然材料，挑挑看哪些適合？';
+  const ofb = document.getElementById('hotelOpFeedback');
+  ofb.className = 'feedback-box';
+  ofb.innerHTML = '放好材料後，按下「開始運作」，看看有哪些獨居蜂會搬進來住！';
+}
+
+/* 畫出昆蟲旅館的外觀（屋頂 + 6 層牆面 + 每層放置的材料洞口） */
+function renderHotelExterior(){
+  const rowsG = document.getElementById('hotelRows');
+  const top = 42, rowH = 41, bodyH = rowH * HOTEL_FLOORS;
+  let svg = `
+    <polygon points="20,${top} 440,${top} 230,6" fill="#8a5a32" stroke="#4a2c12" stroke-width="2"/>
+    <rect x="16" y="${top}" width="428" height="${bodyH + 4}" rx="6" fill="#6e4a26" stroke="#4a2c12" stroke-width="2"/>`;
+
+  for (let i = 0; i < HOTEL_FLOORS; i++){
+    const y = top + i * rowH;
+    const shade = i % 2 === 0 ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.08)';
+    svg += `<rect x="18" y="${y + 2}" width="424" height="${rowH - 4}" rx="4" fill="${shade}"/>`;
+
+    const items = shelfData[i] || [];
+    const overflow = items.length > HOTEL_SLOTS;
+    const visCount = overflow ? HOTEL_SLOTS - 1 : items.length;
+
+    for (let s = 0; s < visCount; s++){
+      const m = items[s];
+      const cx = 56 + s * 64;
+      const cy = y + rowH / 2;
+      svg += `<circle cx="${cx}" cy="${cy}" r="15" fill="#2a1a0d" stroke="#1a1008" stroke-width="1.5"/>
+              <text x="${cx}" y="${cy + 6}" text-anchor="middle" font-size="16">${materials[m].em}</text>`;
+    }
+    if (overflow){
+      const cx = 56 + (HOTEL_SLOTS - 1) * 64;
+      const cy = y + rowH / 2;
+      svg += `<circle cx="${cx}" cy="${cy}" r="15" fill="#2a1a0d" stroke="#1a1008" stroke-width="1.5"/>
+              <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="13" fill="#ffd166" font-weight="700">+${items.length - HOTEL_SLOTS + 1}</text>`;
+    }
+  }
+  rowsG.innerHTML = svg;
+}
+
+/* 按下「開始運作」：適合的材料洞口會有獨居蜂飛進來入住 */
+function startHotelOperation(){
+  const beesLayer = document.getElementById('hotelBeesLayer');
+  const fb = document.getElementById('hotelOpFeedback');
+  const btn = document.getElementById('hotelStartBtn');
+  beesLayer.innerHTML = '';
+
+  const top = 42, rowH = 41;
+  let totalItems = 0;
+  let goodTargets = [];
+  let badPlaced = false;
+
+  for (let i = 0; i < HOTEL_FLOORS; i++){
+    const items = shelfData[i] || [];
+    totalItems += items.length;
+    const overflow = items.length > HOTEL_SLOTS;
+    const visCount = overflow ? HOTEL_SLOTS - 1 : items.length;
+    for (let s = 0; s < visCount; s++){
+      const m = items[s];
+      const cx = 56 + s * 64;
+      const cy = top + i * rowH + rowH / 2;
+      if (materials[m].good){
+        goodTargets.push({ x: cx, y: cy });
+      } else {
+        badPlaced = true;
+      }
+    }
+  }
+
+  if (totalItems === 0){
+    fb.className = 'feedback-box';
+    fb.innerHTML = '🏠 旅館裡還空空的，先去下面放一些材料吧！';
+    return;
+  }
+
+  if (goodTargets.length === 0){
+    fb.className = 'feedback-box bad';
+    fb.innerHTML = '😶 目前放的材料獨居蜂都不喜歡，沒有蜂願意搬進來……換成有<strong>小孔洞</strong>的天然材料試試看！';
+    return;
+  }
+
+  btn.disabled = true;
+  const ns = 'http://www.w3.org/2000/svg';
+  goodTargets.forEach((t, idx) => {
+    const g = document.createElementNS(ns, 'g');
+    g.setAttribute('transform', `translate(${t.x},${t.y})`);
+    const fly = document.createElementNS(ns, 'g');
+    fly.setAttribute('class', 'hotel-bee-fly');
+    fly.style.animationDelay = (idx * 0.18) + 's';
+    const flip = document.createElementNS(ns, 'g');
+    flip.setAttribute('transform', 'scale(-0.32,0.32)');
+    flip.innerHTML = realBee({ stripes: 3 });
+    fly.appendChild(flip);
+    g.appendChild(fly);
+    beesLayer.appendChild(g);
+  });
+
+  const totalDuration = goodTargets.length * 180 + 1500;
+  setTimeout(() => {
+    fb.className = 'feedback-box good';
+    let msg = `🎉 太棒了！這次共有 <strong>${goodTargets.length}</strong> 隻獨居蜂搬進來住囉！牠們最喜歡有小孔洞的天然材料。`;
+    if (badPlaced) msg += ' 那些光滑石頭、塑膠瓶之類的材料，獨居蜂可不會選喔～';
+    fb.innerHTML = msg;
+    btn.disabled = false;
+  }, totalDuration);
 }
 
 /* ===================================================

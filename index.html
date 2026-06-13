@@ -423,12 +423,26 @@
   <section class="panel" id="tab-hotel">
     <span class="badge badge-purple">單元三</span>
     <h2 class="panel-title">🏨 蓋昆蟲旅館</h2>
-    <p style="color:var(--text-muted); margin-top:-8px;">獨居蜂需要小洞洞來築巢。先點選下面「旅館」裡的一層樓，再點右邊的材料把它放進去——同一種材料可以放很多次，每一層也可以放不同材料喔！</p>
+    <p style="color:var(--text-muted); margin-top:-8px;">獨居蜂需要小洞洞來築巢。先點選下方「旅館」裡的一層樓，再點右邊的材料把它放進去——同一種材料可以放很多次，每一層也可以放不同材料喔！佈置好之後，按下「開始運作」，看看有哪些獨居蜂搬進來住！</p>
 
     <div class="glass-card">
+      <h4 style="color:var(--color-cyan); margin-top:0;">🏠 昆蟲旅館外觀</h4>
+      <div class="hotel-exterior-wrap">
+        <svg id="hotelExterior" class="hotel-exterior" viewBox="0 0 460 300" preserveAspectRatio="xMidYMid meet">
+          <g id="hotelRows"></g>
+          <g id="hotelBeesLayer"></g>
+        </svg>
+      </div>
+      <div class="btn-row" style="margin:4px 0 10px;">
+        <button class="btn btn-primary" id="hotelStartBtn" onclick="startHotelOperation()">🐝 開始運作</button>
+      </div>
+      <div class="feedback-box" id="hotelOpFeedback">
+        放好材料後，按下「開始運作」，看看有哪些獨居蜂會搬進來住！
+      </div>
+
       <div class="lab-layout">
         <div>
-          <h4 style="color:var(--color-cyan); margin-top:0;">🏗️ 你的昆蟲旅館</h4>
+          <h4 style="color:var(--color-cyan); margin-top:0;">🏗️ 佈置你的昆蟲旅館</h4>
           <div class="hotel-structure" id="hotelFrame">
             <!-- 6 層樓由 JS 產生 -->
           </div>
