@@ -704,14 +704,14 @@ input[type="range"] {
   to   { transform: scaleY(0.55); }
 }
 
-.flower-sway { animation: flowerSway 4s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom center; }
+/* 除了獨居蜂本身，畫面中其他元素（花朵、太陽、旅館、花粉等）保持靜止 */
+.flower-sway { transform-box: fill-box; transform-origin: bottom center; }
 @keyframes flowerSway {
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
 }
 
 .pollen {
-  animation: pollenRise 5s ease-in infinite;
   transform-box: fill-box;
 }
 .pollen.p2 { animation-delay: 1.6s; }
@@ -726,7 +726,6 @@ input[type="range"] {
 }
 
 .entrance-glow {
-  animation: entranceGlow 2.4s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
