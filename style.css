@@ -254,6 +254,46 @@ img, svg { max-width: 100%; }
 .compare-card ul { padding-left: 1.2em; line-height: 1.8; color: var(--text-muted); font-size: 0.9rem; }
 .compare-card li strong { color: var(--text-main); }
 
+/* ---------- Media & research cards ---------- */
+.media-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.media-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  text-decoration: none;
+  color: var(--text-main);
+  transition: all 0.25s ease;
+}
+
+.media-card:hover {
+  border-color: var(--color-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 18px rgba(0, 242, 254, 0.18);
+}
+
+.media-card .media-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.media-card h4 { margin: 0 0 6px; font-size: 0.95rem; color: var(--text-bright); }
+.media-card p { margin: 0 0 8px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; flex-grow: 1; }
+.media-card .media-tag {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-teal);
+  background: rgba(0, 245, 160, 0.12);
+  border: 1px solid var(--color-teal);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
 /* ---------- Lab layout ---------- */
 .lab-layout {
   display: grid;
@@ -841,6 +881,7 @@ input[type="range"] {
   .life-layout { grid-template-columns: 1fr; }
   .life-list { flex-direction: row; flex-wrap: wrap; }
   .life-item { flex: 1 1 45%; text-align: center; }
+  .media-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
