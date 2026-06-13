@@ -111,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const hash = location.hash.replace('#', '');
   if (hash) go(hash);
   buildMaterials();
+  buildHotelShelves();
   buildFriendList();
   showFriend(0);
   buildSpeciesList();
@@ -348,7 +349,9 @@ const materials = [
   { em: '🪨', name: '光滑大石頭', good: false, why: '太硬太光滑了，獨居蜂沒辦法在上面鑽洞。' },
   { em: '🥤', name: '塑膠瓶',     good: false, why: '塑膠不透氣又會發霉，對蜂寶寶不好喔。' }
 ];
-let hotelPicked = [];
+const HOTEL_FLOORS = 6;
+let selectedShelf = null;
+const hotelUsed = new Set(); // 已使用過的材料種類（用於全用過獎勵）
 
 function buildMaterials(){
   const list = document.getElementById('materialList');
@@ -363,26 +366,48 @@ function buildMaterials(){
   });
 }
 
+function buildHotelShelves(){
+  const frame = document.getElementById('hotelFrame');
+  frame.innerHTML = '';
+  for (let i = 0; i < HOTEL_FLOORS; i++){
+    const shelf = document.createElement('div');
+    shelf.className = 'hotel-shelf';
+    shelf.dataset.floor = i;
+    shelf.innerHTML = `<span class="shelf-label">第 ${i + 1} 層</span>
+      <div class="shelf-items"><span class="empty-hint">點選這一層，再點右邊的材料放進來</span></div>`;
+    shelf.addEventListener('click', () => selectShelf(i));
+    frame.appendChild(shelf);
+  }
+}
+
+function selectShelf(i){
+  selectedShelf = i;
+  document.querySelectorAll('.hotel-shelf').forEach(el => {
+    el.classList.toggle('active', Number(el.dataset.floor) === i);
+  });
+}
+
 function pickMaterial(i){
   const m = materials[i];
-  const el = document.getElementById('mat' + i);
-  const frame = document.getElementById('hotelFrame');
   const fb = document.getElementById('hotelFeedback');
 
-  if (hotelPicked.includes(i)) return; // already added
+  if (selectedShelf === null){
+    fb.className = 'feedback-box';
+    fb.innerHTML = '👆 請先點選左邊「昆蟲旅館」的<strong>一層樓</strong>，再點材料把它放進去喔！';
+    return;
+  }
 
-  hotelPicked.push(i);
-  el.classList.add('picked');
-
-  // remove empty hint
-  const hint = frame.querySelector('.empty-hint');
+  const shelf = document.querySelector(`.hotel-shelf[data-floor="${selectedShelf}"] .shelf-items`);
+  const hint = shelf.querySelector('.empty-hint');
   if (hint) hint.remove();
 
   const tile = document.createElement('div');
   tile.className = 'hotel-tile';
   tile.textContent = m.em;
   tile.title = m.name;
-  frame.appendChild(tile);
+  shelf.appendChild(tile);
+
+  hotelUsed.add(i);
 
   if (m.good){
     fb.className = 'feedback-box good';
@@ -392,23 +417,21 @@ function pickMaterial(i){
     fb.innerHTML = `❌ <strong>再想想～</strong>${m.why}`;
   }
 
-  // bonus message when all good materials chosen
-  const goodCount = hotelPicked.filter(x => materials[x].good).length;
-  const totalGood = materials.filter(m => m.good).length;
-  if (goodCount === totalGood){
+  // bonus message when all good material types have been tried at least once
+  const goodTypes = materials.map((m, idx) => idx).filter(idx => materials[idx].good);
+  if (goodTypes.every(idx => hotelUsed.has(idx))){
     fb.className = 'feedback-box good';
-    fb.innerHTML = `🎉 <strong>太棒了！</strong>你把適合的天然材料都放進去了，獨居蜂一定會很喜歡這間旅館！`;
+    fb.innerHTML = `🎉 <strong>太棒了！</strong>你已經把所有適合的天然材料都用過了，這間旅館一定會大受歡迎！繼續發揮創意佈置每一層吧～`;
   }
 }
 
 function resetHotel(){
-  hotelPicked = [];
-  document.querySelectorAll('.material-item').forEach(el => el.classList.remove('picked'));
-  const frame = document.getElementById('hotelFrame');
-  frame.innerHTML = '<span class="empty-hint">點右邊的材料，把它們放進旅館裡 →</span>';
+  selectedShelf = null;
+  hotelUsed.clear();
+  buildHotelShelves();
   const fb = document.getElementById('hotelFeedback');
   fb.className = 'feedback-box';
-  fb.innerHTML = '提示：獨居蜂喜歡有<strong>小孔洞</strong>的天然材料。挑挑看哪些適合？';
+  fb.innerHTML = '提示：先點選一層樓（會發出青色光），再點右邊的材料把它放進這一層。獨居蜂喜歡有<strong>小孔洞</strong>的天然材料，挑挑看哪些適合？';
 }
 
 /* ===================================================

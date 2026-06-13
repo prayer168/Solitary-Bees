@@ -412,27 +412,80 @@ input[type="range"] {
 .material-item.picked { border-color: var(--color-teal); background: rgba(0, 245, 160, 0.08); }
 .material-item .em { font-size: 1.4rem; }
 
-.hotel-frame {
-  border: 2px dashed var(--border-color);
+/* 昆蟲旅館：木頭外框 + 6 層樓 */
+.hotel-structure {
+  background: linear-gradient(180deg, rgba(122, 74, 38, 0.18), rgba(58, 38, 19, 0.32));
+  border: 4px solid #6e4a26;
   border-radius: var(--radius-md);
-  min-height: 180px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 14px;
+  padding: 8px;
   margin-bottom: 12px;
 }
 
-.hotel-frame .empty-hint { color: var(--text-muted); font-size: 0.9rem; }
+.hotel-shelf {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 6px 10px;
+  border-bottom: 2px dashed rgba(110, 74, 38, 0.6);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hotel-shelf:last-child { border-bottom: none; }
+
+.hotel-shelf:hover { background: rgba(0, 242, 254, 0.05); }
+
+.hotel-shelf.active {
+  background: rgba(0, 242, 254, 0.1);
+  box-shadow: inset 0 0 0 2px var(--color-cyan);
+}
+
+.shelf-label {
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.hotel-shelf.active .shelf-label {
+  color: var(--color-cyan);
+  background: rgba(0, 242, 254, 0.15);
+}
+
+.shelf-items {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  min-height: 32px;
+}
+
+.shelf-items .empty-hint {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
 
 .hotel-tile {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--color-cyan);
   border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  font-size: 1.6rem;
+  padding: 4px 8px;
+  font-size: 1.3rem;
+  line-height: 1;
+  animation: tilePop 0.25s ease;
+}
+
+@keyframes tilePop {
+  from { transform: scale(0.3); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
 }
 
 .feedback-box {
