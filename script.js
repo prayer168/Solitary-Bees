@@ -350,7 +350,9 @@ const materials = [
   { em: '🥤', name: '塑膠瓶',     good: false, why: '塑膠不透氣又會發霉，對蜂寶寶不好喔。' }
 ];
 const HOTEL_FLOORS = 6;
-const HOTEL_SLOTS = 6; // 每層外觀最多顯示的洞口數
+const HOTEL_SLOTS = 5; // 每層外觀最多顯示的洞口數
+const HOTEL_SLOT_X0 = 100; // 第一個洞口的中心 x（留空間給樓層標籤）
+const HOTEL_SLOT_DX = 64;  // 洞口間距
 let selectedShelf = null;
 const hotelUsed = new Set(); // 已使用過的材料種類（用於全用過獎勵）
 let shelfData = [];
@@ -369,27 +371,14 @@ function buildMaterials(){
 }
 
 function buildHotelShelves(){
-  const frame = document.getElementById('hotelFrame');
-  frame.innerHTML = '';
   shelfData = [];
-  for (let i = 0; i < HOTEL_FLOORS; i++){
-    shelfData.push([]);
-    const shelf = document.createElement('div');
-    shelf.className = 'hotel-shelf';
-    shelf.dataset.floor = i;
-    shelf.innerHTML = `<span class="shelf-label">第 ${i + 1} 層</span>
-      <div class="shelf-items"><span class="empty-hint">點選這一層，再點右邊的材料放進來</span></div>`;
-    shelf.addEventListener('click', () => selectShelf(i));
-    frame.appendChild(shelf);
-  }
+  for (let i = 0; i < HOTEL_FLOORS; i++) shelfData.push([]);
   renderHotelExterior();
 }
 
 function selectShelf(i){
   selectedShelf = i;
-  document.querySelectorAll('.hotel-shelf').forEach(el => {
-    el.classList.toggle('active', Number(el.dataset.floor) === i);
-  });
+  renderHotelExterior();
 }
 
 function pickMaterial(i){
@@ -401,16 +390,6 @@ function pickMaterial(i){
     fb.innerHTML = '👆 請先點選左邊「昆蟲旅館」的<strong>一層樓</strong>，再點材料把它放進去喔！';
     return;
   }
-
-  const shelf = document.querySelector(`.hotel-shelf[data-floor="${selectedShelf}"] .shelf-items`);
-  const hint = shelf.querySelector('.empty-hint');
-  if (hint) hint.remove();
-
-  const tile = document.createElement('div');
-  tile.className = 'hotel-tile';
-  tile.textContent = m.em;
-  tile.title = m.name;
-  shelf.appendChild(tile);
 
   shelfData[selectedShelf].push(i);
   renderHotelExterior();
@@ -439,13 +418,10 @@ function resetHotel(){
   document.getElementById('hotelBeesLayer').innerHTML = '';
   const fb = document.getElementById('hotelFeedback');
   fb.className = 'feedback-box';
-  fb.innerHTML = '提示：先點選一層樓（會發出青色光），再點右邊的材料把它放進這一層。獨居蜂喜歡有<strong>小孔洞</strong>的天然材料，挑挑看哪些適合？';
-  const ofb = document.getElementById('hotelOpFeedback');
-  ofb.className = 'feedback-box';
-  ofb.innerHTML = '放好材料後，按下「開始運作」，看看有哪些獨居蜂會搬進來住！';
+  fb.innerHTML = '提示：先點選旅館裡的<strong>一層樓</strong>（會發出青色光），再點右邊的材料把它放進這一層。獨居蜂喜歡有<strong>小孔洞</strong>的天然材料，挑挑看哪些適合？';
 }
 
-/* 畫出昆蟲旅館的外觀（屋頂 + 6 層牆面 + 每層放置的材料洞口） */
+/* 畫出昆蟲旅館的外觀（屋頂 + 6 層牆面 + 每層的樓層按鈕與材料洞口） */
 function renderHotelExterior(){
   const rowsG = document.getElementById('hotelRows');
   const top = 42, rowH = 41, bodyH = rowH * HOTEL_FLOORS;
@@ -455,8 +431,13 @@ function renderHotelExterior(){
 
   for (let i = 0; i < HOTEL_FLOORS; i++){
     const y = top + i * rowH;
-    const shade = i % 2 === 0 ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.08)';
-    svg += `<rect x="18" y="${y + 2}" width="424" height="${rowH - 4}" rx="4" fill="${shade}"/>`;
+    const active = i === selectedShelf;
+    const shade = active ? 'rgba(0,242,254,0.16)' : (i % 2 === 0 ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.08)');
+    svg += `<rect class="hotel-row-hit" x="18" y="${y + 2}" width="424" height="${rowH - 4}" rx="4" fill="${shade}"
+              style="cursor:pointer; ${active ? 'stroke:var(--color-cyan); stroke-width:2px;' : ''}"
+              onclick="selectShelf(${i})"/>
+            <text x="30" y="${y + rowH / 2 + 5}" font-size="13" font-weight="700"
+              style="pointer-events:none; fill:${active ? 'var(--color-cyan)' : '#d8c2a4'}">第 ${i + 1} 層</text>`;
 
     const items = shelfData[i] || [];
     const overflow = items.length > HOTEL_SLOTS;
@@ -464,16 +445,16 @@ function renderHotelExterior(){
 
     for (let s = 0; s < visCount; s++){
       const m = items[s];
-      const cx = 56 + s * 64;
+      const cx = HOTEL_SLOT_X0 + s * HOTEL_SLOT_DX;
       const cy = y + rowH / 2;
-      svg += `<circle cx="${cx}" cy="${cy}" r="15" fill="#2a1a0d" stroke="#1a1008" stroke-width="1.5"/>
-              <text x="${cx}" y="${cy + 6}" text-anchor="middle" font-size="16">${materials[m].em}</text>`;
+      svg += `<circle cx="${cx}" cy="${cy}" r="15" fill="#2a1a0d" stroke="#1a1008" stroke-width="1.5" style="pointer-events:none"/>
+              <text x="${cx}" y="${cy + 6}" text-anchor="middle" font-size="16" style="pointer-events:none">${materials[m].em}</text>`;
     }
     if (overflow){
-      const cx = 56 + (HOTEL_SLOTS - 1) * 64;
+      const cx = HOTEL_SLOT_X0 + (HOTEL_SLOTS - 1) * HOTEL_SLOT_DX;
       const cy = y + rowH / 2;
-      svg += `<circle cx="${cx}" cy="${cy}" r="15" fill="#2a1a0d" stroke="#1a1008" stroke-width="1.5"/>
-              <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="13" fill="#ffd166" font-weight="700">+${items.length - HOTEL_SLOTS + 1}</text>`;
+      svg += `<circle cx="${cx}" cy="${cy}" r="15" fill="#2a1a0d" stroke="#1a1008" stroke-width="1.5" style="pointer-events:none"/>
+              <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="13" fill="#ffd166" font-weight="700" style="pointer-events:none">+${items.length - HOTEL_SLOTS + 1}</text>`;
     }
   }
   rowsG.innerHTML = svg;
@@ -482,7 +463,7 @@ function renderHotelExterior(){
 /* 按下「開始運作」：適合的材料洞口會有獨居蜂飛進來入住 */
 function startHotelOperation(){
   const beesLayer = document.getElementById('hotelBeesLayer');
-  const fb = document.getElementById('hotelOpFeedback');
+  const fb = document.getElementById('hotelFeedback');
   const btn = document.getElementById('hotelStartBtn');
   beesLayer.innerHTML = '';
 
@@ -498,7 +479,7 @@ function startHotelOperation(){
     const visCount = overflow ? HOTEL_SLOTS - 1 : items.length;
     for (let s = 0; s < visCount; s++){
       const m = items[s];
-      const cx = 56 + s * 64;
+      const cx = HOTEL_SLOT_X0 + s * HOTEL_SLOT_DX;
       const cy = top + i * rowH + rowH / 2;
       if (materials[m].good){
         goodTargets.push({ x: cx, y: cy });
@@ -510,7 +491,7 @@ function startHotelOperation(){
 
   if (totalItems === 0){
     fb.className = 'feedback-box';
-    fb.innerHTML = '🏠 旅館裡還空空的，先去下面放一些材料吧！';
+    fb.innerHTML = '🏠 旅館裡還空空的，先去右邊放一些材料吧！';
     return;
   }
 
