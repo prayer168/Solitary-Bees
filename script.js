@@ -414,8 +414,24 @@ function pickMaterial(i){
 function resetHotel(){
   selectedShelf = null;
   hotelUsed.clear();
+  clearHotelTimers();
+  hotelPaused = false;
+  hotelRunning = false;
   buildHotelShelves();
-  document.getElementById('hotelBeesLayer').innerHTML = '';
+
+  const beesLayer = document.getElementById('hotelBeesLayer');
+  beesLayer.innerHTML = '';
+  beesLayer.classList.remove('hotel-paused');
+
+  document.getElementById('hotelCaption').hidden = true;
+  document.querySelectorAll('#hotelTimeline .timeline-step').forEach(el => el.classList.remove('active', 'done'));
+
+  document.getElementById('hotelStartBtn').disabled = false;
+  const pauseBtn = document.getElementById('hotelPauseBtn');
+  pauseBtn.disabled = true;
+  pauseBtn.textContent = '⏸️ 暫停';
+  document.getElementById('hotelReplayBtn').disabled = true;
+
   const fb = document.getElementById('hotelFeedback');
   fb.className = 'feedback-box';
   fb.innerHTML = '提示：先點選旅館裡的<strong>一層樓</strong>（會發出青色光），再點右邊的材料把它放進這一層。獨居蜂喜歡有<strong>小孔洞</strong>的天然材料，挑挑看哪些適合？';
@@ -460,12 +476,126 @@ function renderHotelExterior(){
   rowsG.innerHTML = svg;
 }
 
-/* 按下「開始運作」：適合的材料洞口會有獨居蜂飛進來入住 */
+/* ===================================================
+   入住故事動畫：時間軸 + 旁白泡泡 + 播放控制
+   =================================================== */
+const HOTEL_NS = 'http://www.w3.org/2000/svg';
+const HOTEL_STEPS = [
+  { icon: '🐝', label: '飛來',     desc: '一隻獨居蜂從遠方飛來，準備尋找新家。' },
+  { icon: '🔍', label: '選定洞口', desc: '牠仔細check每個洞口，挑選大小合適、有天然孔洞的房間。' },
+  { icon: '🌾', label: '搬運入住', desc: '適合的洞口陸續有獨居蜂飛進來，搬入花粉與巢材。' },
+  { icon: '🏠', label: '入住完成', desc: '昆蟲旅館順利住滿新房客！' }
+];
+
+let hotelTimers = [];
+let hotelSpeed = 1;
+let hotelPaused = false;
+let hotelRunning = false;
+
+function scheduleHotel(fn, delayMs){
+  const t = { fn, remaining: delayMs, handle: null, startedAt: null };
+  armHotelTimer(t);
+  hotelTimers.push(t);
+  return t;
+}
+function armHotelTimer(t){
+  t.startedAt = Date.now();
+  t.handle = setTimeout(() => {
+    hotelTimers = hotelTimers.filter(x => x !== t);
+    t.fn();
+  }, Math.max(0, t.remaining / hotelSpeed));
+}
+function clearHotelTimers(){
+  hotelTimers.forEach(t => clearTimeout(t.handle));
+  hotelTimers = [];
+}
+
+function setHotelStep(i){
+  document.querySelectorAll('#hotelTimeline .timeline-step').forEach((el, idx) => {
+    el.classList.toggle('active', idx === i);
+    el.classList.toggle('done', idx < i);
+  });
+  const s = HOTEL_STEPS[i];
+  const cap = document.getElementById('hotelCaption');
+  cap.querySelector('.cap-title').textContent = `${s.icon} ${s.label}`;
+  cap.querySelector('.cap-desc').textContent = s.desc;
+  cap.hidden = false;
+}
+
+function toggleHotelPause(){
+  if (!hotelRunning) return;
+  hotelPaused = !hotelPaused;
+  const btn = document.getElementById('hotelPauseBtn');
+  const beesLayer = document.getElementById('hotelBeesLayer');
+  if (hotelPaused){
+    hotelTimers.forEach(t => {
+      clearTimeout(t.handle);
+      t.remaining -= (Date.now() - t.startedAt) * hotelSpeed;
+      if (t.remaining < 0) t.remaining = 0;
+    });
+    beesLayer.classList.add('hotel-paused');
+    btn.textContent = '▶️ 繼續';
+  } else {
+    hotelTimers.forEach(armHotelTimer);
+    beesLayer.classList.remove('hotel-paused');
+    btn.textContent = '⏸️ 暫停';
+  }
+}
+
+/* 開場：一隻偵查蜂飛入畫面，盤旋觀察整座旅館 */
+function spawnScoutBee(layer){
+  const g = document.createElementNS(HOTEL_NS, 'g');
+  g.setAttribute('transform', 'translate(150,140)');
+  const fly = document.createElementNS(HOTEL_NS, 'g');
+  fly.setAttribute('class', 'scout-bee');
+  const flip = document.createElementNS(HOTEL_NS, 'g');
+  flip.setAttribute('transform', 'scale(0.5,0.5)');
+  flip.innerHTML = realBee({ stripes: 3 });
+  fly.appendChild(flip);
+  g.appendChild(fly);
+  layer.appendChild(g);
+}
+
+/* 選定洞口：洞口外圈短暫亮起一圈光環 */
+function spawnHoleCheck(layer, t){
+  const c = document.createElementNS(HOTEL_NS, 'circle');
+  c.setAttribute('class', 'hole-check');
+  c.setAttribute('cx', t.x);
+  c.setAttribute('cy', t.y);
+  c.setAttribute('r', 15);
+  layer.appendChild(c);
+}
+
+/* 搬運入住：蜂飛入洞口並縮小消失，洞口隨即點亮 */
+function spawnSettleBee(layer, t){
+  const g = document.createElementNS(HOTEL_NS, 'g');
+  g.setAttribute('transform', `translate(${t.x},${t.y})`);
+  const fly = document.createElementNS(HOTEL_NS, 'g');
+  fly.setAttribute('class', 'hotel-bee-fly');
+  const flip = document.createElementNS(HOTEL_NS, 'g');
+  flip.setAttribute('transform', 'scale(-0.32,0.32)');
+  flip.innerHTML = realBee({ stripes: 3 });
+  fly.appendChild(flip);
+  g.appendChild(fly);
+  layer.appendChild(g);
+
+  const glow = document.createElementNS(HOTEL_NS, 'circle');
+  glow.setAttribute('class', 'hole-glow');
+  glow.setAttribute('cx', t.x);
+  glow.setAttribute('cy', t.y);
+  glow.setAttribute('r', 15);
+  glow.style.animationDelay = '1.6s';
+  layer.appendChild(glow);
+}
+
+/* 按下「開始運作」：依時間軸播放完整入住故事 */
 function startHotelOperation(){
   const beesLayer = document.getElementById('hotelBeesLayer');
   const fb = document.getElementById('hotelFeedback');
+  const cap = document.getElementById('hotelCaption');
   const btn = document.getElementById('hotelStartBtn');
-  beesLayer.innerHTML = '';
+  const pauseBtn = document.getElementById('hotelPauseBtn');
+  const replayBtn = document.getElementById('hotelReplayBtn');
 
   const top = 42, rowH = 41;
   let totalItems = 0;
@@ -501,41 +631,55 @@ function startHotelOperation(){
     return;
   }
 
+  clearHotelTimers();
+  beesLayer.innerHTML = '';
+  beesLayer.classList.remove('hotel-paused');
+  hotelSpeed = parseFloat(document.getElementById('hotelSpeed').value) || 1;
+  hotelPaused = false;
+  hotelRunning = true;
+
   btn.disabled = true;
-  const ns = 'http://www.w3.org/2000/svg';
-  goodTargets.forEach((t, idx) => {
-    const delay = idx * 0.25;
+  pauseBtn.disabled = false;
+  pauseBtn.textContent = '⏸️ 暫停';
+  replayBtn.disabled = true;
+  cap.hidden = true;
+  fb.className = 'feedback-box';
+  fb.innerHTML = '🎬 故事開始了，跟著時間軸看看獨居蜂怎麼住進旅館吧！';
 
-    const g = document.createElementNS(ns, 'g');
-    g.setAttribute('transform', `translate(${t.x},${t.y})`);
-    const fly = document.createElementNS(ns, 'g');
-    fly.setAttribute('class', 'hotel-bee-fly');
-    fly.style.animationDelay = delay + 's';
-    const flip = document.createElementNS(ns, 'g');
-    flip.setAttribute('transform', 'scale(-0.32,0.32)');
-    flip.innerHTML = realBee({ stripes: 3 });
-    fly.appendChild(flip);
-    g.appendChild(fly);
-    beesLayer.appendChild(g);
+  // 第 1 步：飛來
+  setHotelStep(0);
+  spawnScoutBee(beesLayer);
 
-    // 蜂飛抵洞口時，洞口會亮一下，像是蜂搬進新家點亮燈火
-    const glow = document.createElementNS(ns, 'circle');
-    glow.setAttribute('class', 'hole-glow');
-    glow.setAttribute('cx', t.x);
-    glow.setAttribute('cy', t.y);
-    glow.setAttribute('r', 15);
-    glow.style.animationDelay = (delay + 1.6) + 's';
-    beesLayer.appendChild(glow);
-  });
+  // 第 2 步：選定洞口
+  scheduleHotel(() => {
+    setHotelStep(1);
+    goodTargets.forEach((t, idx) => {
+      scheduleHotel(() => spawnHoleCheck(beesLayer, t), idx * 150);
+    });
+  }, 1800);
 
-  const totalDuration = goodTargets.length * 250 + 1900;
-  setTimeout(() => {
+  // 第 3 步：搬運入住
+  const step3Start = 1800 + (goodTargets.length - 1) * 150 + 700 + 600;
+  scheduleHotel(() => {
+    setHotelStep(2);
+    goodTargets.forEach((t, idx) => {
+      scheduleHotel(() => spawnSettleBee(beesLayer, t), idx * 250);
+    });
+  }, step3Start);
+
+  // 第 4 步：入住完成
+  const step4Start = step3Start + (goodTargets.length - 1) * 250 + 1900 + 400;
+  scheduleHotel(() => {
+    setHotelStep(3);
     fb.className = 'feedback-box good';
     let msg = `🎉 太棒了！這次共有 <strong>${goodTargets.length}</strong> 隻獨居蜂搬進來住囉！牠們最喜歡有小孔洞的天然材料。`;
     if (badPlaced) msg += ' 那些光滑石頭、塑膠瓶之類的材料，獨居蜂可不會選喔～';
     fb.innerHTML = msg;
     btn.disabled = false;
-  }, totalDuration);
+    pauseBtn.disabled = true;
+    replayBtn.disabled = false;
+    hotelRunning = false;
+  }, step4Start);
 }
 
 /* ===================================================

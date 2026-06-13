@@ -417,12 +417,84 @@ input[type="range"] {
   width: 100%;
   max-width: 460px;
   margin: 0 auto 8px;
+  position: relative;
 }
 .hotel-exterior {
   display: block;
   width: 100%;
   height: auto;
 }
+
+/* 入住故事時間軸 */
+.hotel-timeline {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-bottom: 10px;
+  padding: 8px 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+.timeline-step {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+.timeline-step .step-icon { font-size: 1.4rem; }
+.timeline-step.active {
+  color: var(--color-cyan);
+  opacity: 1;
+  transform: scale(1.08);
+}
+.timeline-step.done {
+  color: var(--color-teal);
+  opacity: 0.85;
+}
+
+/* 旁白泡泡 */
+.hotel-caption {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 90%;
+  background: rgba(10, 18, 32, 0.85);
+  border: 1px solid var(--color-cyan);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  animation: captionPop 0.3s ease;
+}
+.hotel-caption .cap-title { color: var(--color-cyan); }
+.hotel-caption .cap-desc { margin: 2px 0 0; color: var(--text-main); }
+@keyframes captionPop {
+  from { transform: translateX(-50%) translateY(-8px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* 播放速度 */
+.hotel-speed-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.hotel-speed-row input[type="range"] { flex: 1 1 auto; }
+
 .hotel-bee-fly {
   opacity: 0;
   transform-box: fill-box;
@@ -437,6 +509,35 @@ input[type="range"] {
   80%  { transform: translate(2px, -3px) scale(0.85) rotate(-3deg); opacity: 1; }
   100% { transform: translate(-2px, 3px) scale(0.32) rotate(0deg); opacity: 0; }
 }
+
+/* 開場：偵查蜂飛入畫面，盤旋觀察整座旅館 */
+.scout-bee {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: scoutFlyIn 1.8s ease-in-out forwards;
+}
+@keyframes scoutFlyIn {
+  0%   { transform: translate(-90px, 50px) scale(0.85) rotate(-6deg); opacity: 0; }
+  15%  { opacity: 1; }
+  55%  { transform: translate(30px, -10px) scale(0.6) rotate(3deg); opacity: 1; }
+  100% { transform: translate(55px, -25px) scale(0.55) rotate(-2deg); opacity: 1; }
+}
+
+/* 選定洞口：洞口外圈短暫亮起一圈光環 */
+.hole-check {
+  fill: none;
+  stroke: var(--color-cyan);
+  stroke-width: 2;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: holeCheckPulse 0.7s ease-out forwards;
+}
+@keyframes holeCheckPulse {
+  0%   { opacity: 0.9; transform: scale(0.8); }
+  100% { opacity: 0; transform: scale(1.8); }
+}
+
 .hole-glow {
   fill: #ffd166;
   opacity: 0;
@@ -449,7 +550,17 @@ input[type="range"] {
   35%  { opacity: 0.65; transform: scale(1.5); }
   100% { opacity: 0;   transform: scale(2); }
 }
-#hotelStartBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+#hotelStartBtn:disabled,
+#hotelPauseBtn:disabled,
+#hotelReplayBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* 暫停時凍結所有入住動畫 */
+.hotel-paused .hotel-bee-fly,
+.hotel-paused .hole-glow,
+.hotel-paused .scout-bee,
+.hotel-paused .hole-check {
+  animation-play-state: paused;
+}
 
 .feedback-box {
   border-radius: var(--radius-md);
@@ -699,12 +810,14 @@ input[type="range"] {
 @media (prefers-reduced-motion: reduce) {
   .bee-fly, .wing-l, .wing-r, .flower-sway, .pollen, .entrance-glow, .bee-enter,
   .fwing, .hwing, .wing-blur, .antenna, .leg, .hover-bob, .approach, .dig-down, .gathering,
-  .hotel-bee-fly, .hole-glow {
+  .hotel-bee-fly, .hole-glow, .scout-bee, .hole-check, .hotel-caption {
     animation: none !important;
   }
   .wing-blur { opacity: 0.18; }
   .hotel-bee-fly { opacity: 1; transform: scale(0.4); }
   .hole-glow { opacity: 0; }
+  .scout-bee { opacity: 1; transform: translate(55px,-25px) scale(0.55); }
+  .hole-check { opacity: 0; }
 }
 
 /* ---------- Footer hint ---------- */

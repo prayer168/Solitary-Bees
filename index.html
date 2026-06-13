@@ -429,15 +429,31 @@
       <div class="lab-layout">
         <div>
           <h4 style="color:var(--color-cyan); margin-top:0;">🏠 你的昆蟲旅館</h4>
+          <div class="hotel-timeline" id="hotelTimeline">
+            <div class="timeline-step" data-step="0"><span class="step-icon">🐝</span><span class="step-label">飛來</span></div>
+            <div class="timeline-step" data-step="1"><span class="step-icon">🔍</span><span class="step-label">選定洞口</span></div>
+            <div class="timeline-step" data-step="2"><span class="step-icon">🌾</span><span class="step-label">搬運入住</span></div>
+            <div class="timeline-step" data-step="3"><span class="step-icon">🏠</span><span class="step-label">入住完成</span></div>
+          </div>
           <div class="hotel-exterior-wrap">
             <svg id="hotelExterior" class="hotel-exterior" viewBox="0 0 460 300" preserveAspectRatio="xMidYMid meet">
               <g id="hotelRows"></g>
               <g id="hotelBeesLayer"></g>
             </svg>
+            <div class="hotel-caption" id="hotelCaption" hidden>
+              <strong class="cap-title"></strong>
+              <p class="cap-desc"></p>
+            </div>
           </div>
-          <div class="btn-row" style="margin:8px 0;">
+          <div class="btn-row" style="margin:8px 0; flex-wrap:wrap;">
             <button class="btn btn-primary" id="hotelStartBtn" onclick="startHotelOperation()">🐝 開始運作</button>
-            <button class="btn btn-secondary" onclick="resetHotel()">🔄 清空重蓋</button>
+            <button class="btn btn-secondary" id="hotelPauseBtn" onclick="toggleHotelPause()" disabled>⏸️ 暫停</button>
+            <button class="btn btn-secondary" id="hotelReplayBtn" onclick="startHotelOperation()" disabled>🔁 重新播放</button>
+            <button class="btn btn-secondary" onclick="resetHotel()">🧹 清空重蓋</button>
+          </div>
+          <div class="hotel-speed-row">
+            <span>🐢 速度 🐇</span>
+            <input type="range" id="hotelSpeed" min="0.5" max="2" step="0.25" value="1">
           </div>
           <div class="feedback-box" id="hotelFeedback">
             提示：先點選旅館裡的<strong>一層樓</strong>（會發出青色光），再點右邊的材料把它放進這一層。獨居蜂喜歡有<strong>小孔洞</strong>的天然材料，挑挑看哪些適合？
