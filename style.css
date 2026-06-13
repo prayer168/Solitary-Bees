@@ -415,12 +415,16 @@ input[type="range"] {
 /* 昆蟲旅館外觀（屋頂 + 牆面 + 入住動畫） */
 .hotel-exterior-wrap {
   width: 100%;
-  max-width: 460px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   margin: 0 auto 8px;
   position: relative;
 }
 .hotel-exterior {
   display: block;
+  flex: 1 1 auto;
+  min-width: 0;
   width: 100%;
   height: auto;
 }
@@ -462,26 +466,27 @@ input[type="range"] {
 
 /* 旁白泡泡 */
 .hotel-caption {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 90%;
+  flex: 0 0 130px;
+  width: 130px;
   background: rgba(10, 18, 32, 0.85);
   border: 1px solid var(--color-cyan);
   border-radius: var(--radius-md);
-  padding: 8px 14px;
-  text-align: center;
-  font-size: 0.85rem;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 0.8rem;
   line-height: 1.5;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
   animation: captionPop 0.3s ease;
 }
-.hotel-caption .cap-title { color: var(--color-cyan); }
+.hotel-caption .cap-title { color: var(--color-cyan); display: block; }
 .hotel-caption .cap-desc { margin: 2px 0 0; color: var(--text-main); }
 @keyframes captionPop {
-  from { transform: translateX(-50%) translateY(-8px); opacity: 0; }
-  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+  from { transform: translateY(-8px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@media (max-width: 520px) {
+  .hotel-exterior-wrap { flex-direction: column; }
+  .hotel-caption { width: 100%; flex: 0 0 auto; }
 }
 
 /* 播放速度 */
