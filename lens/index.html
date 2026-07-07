@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>放大鏡的秘密：凸透鏡成像實驗｜互動教材</title>
+<meta name="description" content="用放大鏡（凸透鏡）做成像實驗：拖動蠟燭與屏幕，觀察倒立/正立、放大/縮小、清楚/模糊的變化。互動教材，適合國小中高年級與國中理化。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ Navbar ============ -->
+<nav class="navbar">
+  <div class="brand">🔍 放大鏡的秘密 · 凸透鏡成像實驗</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-tab="home" onclick="go('home')">🏠 開始</button>
+    <button class="nav-tab" data-tab="goal" onclick="go('goal')">🎯 學習目標</button>
+    <button class="nav-tab" data-tab="gear" onclick="go('gear')">🧰 實驗器材</button>
+    <button class="nav-tab" data-tab="demo" onclick="go('demo')">🔬 實驗示範</button>
+    <button class="nav-tab" data-tab="bench" onclick="go('bench')">🔭 光學實驗台</button>
+    <button class="nav-tab" data-tab="rule" onclick="go('rule')">📊 成像規律</button>
+    <button class="nav-tab" data-tab="challenge" onclick="go('challenge')">🧪 探究挑戰</button>
+    <button class="nav-tab" data-tab="quiz" onclick="go('quiz')">🏆 闖關測驗</button>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- ============ Home ============ -->
+  <section id="tab-home" class="panel active">
+    <div class="hero">
+      <div class="hero-scene">
+        <svg viewBox="0 0 320 150" width="320" height="150" aria-label="放大鏡與燭光">
+          <!-- candle -->
+          <rect x="34" y="86" width="16" height="40" rx="3" fill="#ffe1a8"/>
+          <ellipse cx="42" cy="126" rx="12" ry="4" fill="#c98b3a" opacity="0.5"/>
+          <path d="M42 66 q9 12 0 22 q-9 -10 0 -22Z" fill="#ffcf6b">
+            <animate attributeName="opacity" values="0.75;1;0.8;1" dur="1.4s" repeatCount="indefinite"/>
+          </path>
+          <path d="M42 72 q5 8 0 14 q-5 -6 0 -14Z" fill="#ff8a3c"/>
+          <!-- lens -->
+          <g transform="translate(170,86)">
+            <path d="M0 -46 C 22 -22 22 22 0 46 C -22 22 -22 -22 0 -46 Z"
+                  fill="rgba(0,242,254,0.12)" stroke="#00f2fe" stroke-width="2.5"/>
+          </g>
+          <!-- inverted image arrow -->
+          <g transform="translate(266,86)">
+            <line x1="0" y1="0" x2="0" y2="26" stroke="#00f5a0" stroke-width="3"/>
+            <path d="M-5 20 L0 28 L5 20 Z" fill="#00f5a0"/>
+          </g>
+          <line x1="10" y1="86" x2="310" y2="86" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+        </svg>
+      </div>
+      <span class="badge badge-cyan">科學探究與實作 · 影片 05</span>
+      <h1>放大鏡的秘密</h1>
+      <p>一片小小的放大鏡，為什麼有時把東西放大、有時卻讓影像上下顛倒？<br>
+         這堂課，我們親手移動蠟燭和屏幕，找出「像」變化的規律。</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="go('goal')">開始探索 →</button>
+        <button class="btn btn-secondary" onclick="go('bench')">直接玩實驗台 🔭</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Goal ============ -->
+  <section id="tab-goal" class="panel">
+    <span class="badge badge-cyan">學習目標</span>
+    <h2 class="panel-title">這堂課我們要學會的事</h2>
+    <div class="grid-3">
+      <div class="goal-card">
+        <span class="icon">🔭</span>
+        <h3>認識凸透鏡</h3>
+        <p>知道放大鏡就是「凸透鏡」，能讓光線聚集，是成像的關鍵工具。</p>
+      </div>
+      <div class="goal-card">
+        <span class="icon">🔄</span>
+        <h3>觀察成像變化</h3>
+        <p>看懂像的三組性質：倒立／正立、放大／縮小、清楚／模糊，並記錄距離。</p>
+      </div>
+      <div class="goal-card">
+        <span class="icon">📐</span>
+        <h3>找出規律</h3>
+        <p>發現物體由遠到近時，像會依序改變，並學會像科學家一樣提問、驗證。</p>
+      </div>
+    </div>
+    <div class="glass-card">
+      <h3 style="margin-top:0;color:var(--color-cyan)">🧭 教材導覽</h3>
+      <p>先到 <strong>🧰 實驗器材</strong> 認識工具，接著看 <strong>🔬 實驗示範</strong> 還原影片的三個操作，
+         然後進入 <strong>🔭 光學實驗台</strong> 自己動手拖拖看，再用 <strong>📊 成像規律</strong> 整理發現，
+         最後挑戰 <strong>🧪 探究任務</strong> 與 <strong>🏆 闖關測驗</strong>。</p>
+    </div>
+  </section>
+
+  <!-- ============ Gear ============ -->
+  <section id="tab-gear" class="panel">
+    <span class="badge badge-orange">實驗器材</span>
+    <h2 class="panel-title">我們準備了哪些工具？</h2>
+    <p style="color:var(--text-muted)">點一點每樣器材，看看它在實驗裡負責什麼工作。</p>
+    <div id="gearGrid" class="gear-grid"></div>
+    <div class="glass-card" style="margin-top:16px">
+      <h3 style="margin-top:0;color:var(--color-yellow)">🔥 安全小提醒</h3>
+      <p>實驗會用到蠟燭和打火機，一定要有<strong>老師或大人陪同</strong>，桌面淨空、頭髮衣袖遠離火源，
+         用完立刻熄滅蠟燭。線上實驗台則完全安全，可以盡情嘗試！</p>
+    </div>
+  </section>
+
+  <!-- ============ Demo ============ -->
+  <section id="tab-demo" class="panel">
+    <span class="badge badge-purple">實驗示範</span>
+    <h2 class="panel-title">還原影片：三個操作</h2>
+    <p style="color:var(--text-muted)">影片裡做了三種操作。看完每一步，記得到「🔭 光學實驗台」自己重現一次！</p>
+    <div id="demoSteps" class="demo-steps"></div>
+    <div class="glass-card key-finding">
+      <h3 style="margin-top:0">🌟 影片的重要發現</h3>
+      <p>當物體<strong>由遠到近</strong>慢慢靠近放大鏡時，像會照這個順序改變：</p>
+      <div class="finding-flow">
+        <span class="flow-item inv-small">倒立<br>縮小</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item inv-big">倒立<br>放大</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item blur">一瞬間<br>模糊</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item up-big">正立<br>放大</span>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:0">
+        影片小提醒：實際觀察時通常是<strong>移動放大鏡</strong>；影片為了方便拍攝改成固定放大鏡、移動物體，效果一樣。</p>
+    </div>
+  </section>
+
+  <!-- ============ Optical Bench (core) ============ -->
+  <section id="tab-bench" class="panel">
+    <span class="badge badge-teal">核心互動</span>
+    <h2 class="panel-title">🔭 光學實驗台</h2>
+    <p style="color:var(--text-muted)">拖動<strong>蠟燭</strong>改變物體到放大鏡的距離，觀察屏幕上的像怎麼變。
+       打開「進階」還能調整放大鏡的焦距，試試不同的放大鏡！</p>
+
+    <div class="bench-layout">
+      <div class="glass-card bench-canvas-card">
+        <div class="canvas-wrap">
+          <canvas id="benchCanvas" width="720" height="380"></canvas>
+        </div>
+        <div class="canvas-hint">👆 用滑鼠或手指拖動蠟燭；或用下方滑桿調整。</div>
+      </div>
+
+      <div class="bench-side">
+        <div class="sidebar-block">
+          <h4>🕯️ 物體位置（物距）</h4>
+          <input type="range" id="objSlider" min="5" max="80" value="60" step="0.5" class="slider">
+          <div class="data-row"><span>物體到放大鏡</span><b id="objVal">60.0 cm</b></div>
+        </div>
+
+        <div class="sidebar-block advanced" id="advBlock" hidden>
+          <h4>🔭 放大鏡焦距 <span class="adv-tag">進階</span></h4>
+          <input type="range" id="focSlider" min="8" max="22" value="13" step="0.5" class="slider">
+          <div class="data-row"><span>焦距 f</span><b id="focVal">13.0 cm</b></div>
+          <p class="mini-note">焦距＝不同的放大鏡。換一片放大鏡，同樣的距離會看到不一樣的像喔！</p>
+        </div>
+
+        <div class="sidebar-block readout" id="readoutBlock">
+          <h4>📸 現在屏幕上的像</h4>
+          <div id="imageReadout"></div>
+        </div>
+
+        <div class="sidebar-block">
+          <h4>🎬 一鍵重現影片場景</h4>
+          <div class="scene-btns">
+            <button class="chip-btn" onclick="setScene('far')">遠處：倒立縮小</button>
+            <button class="chip-btn" onclick="setScene('two-f')">2 倍焦距：倒立等大</button>
+            <button class="chip-btn" onclick="setScene('near')">靠近：倒立放大</button>
+            <button class="chip-btn" onclick="setScene('focus')">焦點上：模糊</button>
+            <button class="chip-btn" onclick="setScene('inside')">很近：正立放大</button>
+          </div>
+        </div>
+
+        <div class="sidebar-block toggle-block">
+          <label class="switch-row">
+            <input type="checkbox" id="advToggle" onchange="toggleAdvanced()">
+            <span>顯示進階：焦距與光線原理</span>
+          </label>
+          <label class="switch-row">
+            <input type="checkbox" id="rayToggle" checked onchange="drawBench()">
+            <span>顯示光線追跡</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card adv-explain" id="advExplain" hidden>
+      <h3 style="margin-top:0;color:var(--color-purple)">🔬 進階：焦距的秘密（給想深入的你）</h3>
+      <p>凸透鏡有一個特別的點叫<strong>焦點</strong>，離鏡片的距離就是<strong>焦距 f</strong>。物體到鏡片的距離（物距）和 f、2f 的關係，決定了像長什麼樣子：</p>
+      <ul class="adv-list">
+        <li><b>物距 &gt; 2f：</b>倒立、縮小的實像（可投影在屏幕上）</li>
+        <li><b>物距 = 2f：</b>倒立、和物體一樣大的實像</li>
+        <li><b>2f &gt; 物距 &gt; f：</b>倒立、放大的實像</li>
+        <li><b>物距 = f：</b>光線平行射出，屏幕上<b>無法成像（模糊）</b></li>
+        <li><b>物距 &lt; f：</b>正立、放大的<b>虛像</b>——這就是我們平常用放大鏡看字放大的樣子！</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Rule ============ -->
+  <section id="tab-rule" class="panel">
+    <span class="badge badge-cyan">成像規律</span>
+    <h2 class="panel-title">📊 把發現整理成一張表</h2>
+    <p style="color:var(--text-muted)">這張表跟「🔭 光學實驗台」是連動的——回到實驗台拖動蠟燭，對照看看你現在落在哪一列。</p>
+    <div class="rule-table-wrap">
+      <table class="rule-table">
+        <thead>
+          <tr><th>物體離放大鏡</th><th>上下</th><th>大小</th><th>清楚？</th><th>能投影在屏幕？</th></tr>
+        </thead>
+        <tbody>
+          <tr data-zone="far"><td>很遠（比 2 倍焦距還遠）</td><td>倒立</td><td>縮小</td><td>清楚</td><td>可以（實像）</td></tr>
+          <tr data-zone="two-f"><td>剛好 2 倍焦距</td><td>倒立</td><td>一樣大</td><td>清楚</td><td>可以（實像）</td></tr>
+          <tr data-zone="near"><td>介於 1～2 倍焦距</td><td>倒立</td><td>放大</td><td>清楚</td><td>可以（實像）</td></tr>
+          <tr data-zone="focus"><td>剛好在焦點上</td><td>—</td><td>—</td><td>模糊</td><td>不行（無法成像）</td></tr>
+          <tr data-zone="inside"><td>很近（比焦距還近）</td><td>正立</td><td>放大</td><td>清楚</td><td>不行（虛像，要用眼睛看）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="glass-card">
+      <h3 style="margin-top:0;color:var(--color-teal)">💡 一句話記住</h3>
+      <p>物體<strong>越靠近</strong>放大鏡，像就<strong>越大</strong>；越過焦點之前是<strong>倒立實像</strong>，越過焦點之後變成<strong>正立虛像</strong>，而在焦點那一刻會有<strong>一瞬間的模糊</strong>。</p>
+    </div>
+  </section>
+
+  <!-- ============ Challenge ============ -->
+  <section id="tab-challenge" class="panel">
+    <span class="badge badge-orange">探究挑戰</span>
+    <h2 class="panel-title">🧪 像科學家一樣提問</h2>
+    <p style="color:var(--text-muted)">影片留給我們幾個問題。完成下面的任務，把答案自己「玩」出來！</p>
+    <div id="challengeList" class="challenge-list"></div>
+    <div class="glass-card">
+      <h3 style="margin-top:0;color:var(--color-yellow)">🧠 延伸思考</h3>
+      <p>影片問：<strong>用不同的放大鏡，出現相似影像的距離會一樣嗎？</strong>
+         到實驗台打開「進階」，拖動<strong>焦距</strong>滑桿，再固定一種像（例如倒立等大），看看物體位置有沒有跟著改變——你會發現：<strong>放大鏡不同，結果就不同！</strong></p>
+    </div>
+  </section>
+
+  <!-- ============ Quiz ============ -->
+  <section id="tab-quiz" class="panel">
+    <span class="badge badge-teal">闖關測驗</span>
+    <h2 class="panel-title">🏆 闖關大挑戰</h2>
+    <div id="quizCard" class="glass-card quiz-card"></div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>放大鏡的秘密 · 凸透鏡成像互動教材｜取材自「科學探究與實作影片-05：放大鏡實驗」</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
